@@ -4,7 +4,7 @@
     "indexes": "firestore.indexes.json"
   },
   "hosting": {
-    "public": "public",
+    "public": "dist/schoolmate/browser",
     "site": "schoolformate",
     "ignore": [
       "firebase.json",

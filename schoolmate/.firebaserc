@@ -1,5 +1,7 @@
 {
   "projects": {
     "default": "schoolmate-80431"
-  }
+  },
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
 }
