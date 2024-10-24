@@ -7,9 +7,12 @@ import { AuthService } from '../auth.service';
   templateUrl: './signin.component.html',
   styleUrl: './signin.component.css'
 })
-export class SigninComponent implements OnInit {
+export class SigninComponent {
   constructor(
     public authService: AuthService
   ) { }
-  ngOnInit() { }
+
+  signIn() {
+    this.authService.GoogleAuth().then(resp => console.log(resp));
+  }
 }
