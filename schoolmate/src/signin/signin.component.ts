@@ -13,6 +13,6 @@ export class SigninComponent {
   ) { }
 
   signIn() {
-    this.authService.GoogleAuth().then(resp => console.log(resp));
+    this.authService.GoogleAuth();
   }
 }

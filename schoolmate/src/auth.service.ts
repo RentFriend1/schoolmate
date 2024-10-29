@@ -1,5 +1,5 @@
 import { Injectable, NgZone } from '@angular/core';
-//import * as auth from 'firebase/auth';
+import * as auth from 'firebase/auth';
 import { Auth } from '@angular/fire/auth';
 //import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
@@ -7,6 +7,7 @@ import { Observable, from, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 
 
@@ -26,7 +27,8 @@ export class AuthService {
 
   constructor(
     //public afs: AngularFirestore,
-    public afAuth: Auth,
+
+    public afAuth: AngularFireAuth,
     public router: Router,
     public ngZone: NgZone,
     //private firestore: AngularFirestore,
@@ -47,24 +49,21 @@ export class AuthService {
   }
 
   GoogleAuth() {
-    return signInWithPopup(this.afAuth, new GoogleAuthProvider());
+    return this.AuthLogin(new auth.GoogleAuthProvider());
     //return this.afAuth.signInWithPopup(new GoogleAuthProvider());
     /*return this.AuthLogin(new auth.GoogleAuthProvider()).then((res: any) => {
       this.router.navigate(['dashboard']);
     });*/
   }
 
-  /*AuthLogin(provider: any) {
+
+  *AuthLogin(provider: any) {
     return this.afAuth
       .signInWithPopup(provider)
-      .then((result) => {
-        this.router.navigate(['dashboard']);
         //this.SetUserData(result.user);
-      })
-      .catch((error) => {
-        window.alert(error);
-      });
-  }*/
+  };
+
+  
 
   /*SetUserData(user: any) {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(
@@ -96,4 +95,6 @@ export class AuthService {
     });
   }
 }
+
+
 
