@@ -1,100 +1,62 @@
 import { Injectable, NgZone } from '@angular/core';
-import * as auth from 'firebase/auth';
-import { Auth } from '@angular/fire/auth';
-//import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
+import { Auth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, UserCredential,  } from '@angular/fire/auth';
 import { Router } from '@angular/router';
-import { Observable, from, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-
-
-
-export interface User {
-  uid: string;
-  email: string;
-  displayName: string;
-  photoURL: string;
-}
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
-  userData: any;
+  userData: any; // Holds logged-in user data
 
   constructor(
-    //public afs: AngularFirestore,
-
-    public afAuth: AngularFireAuth,
-    public router: Router,
-    public ngZone: NgZone,
-    //private firestore: AngularFirestore,
-    private http: HttpClient
+    private auth: Auth, // Modern Firebase Auth Service
+    private router: Router,
+    private ngZone: NgZone
   ) {
-    /*this.afAuth.authState.subscribe((user) => {
+    // Monitor auth state and update localStorage
+    this.auth.onAuthStateChanged((user) => {
       if (user) {
         this.userData = user;
         localStorage.setItem('user', JSON.stringify(this.userData));
       } else {
-        localStorage.setItem('user', 'null');
+        localStorage.removeItem('user');
       }
-    });*/
+    });
   }
+
+  /**
+   * Check if user is logged in
+   */
   get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user') || 'null');
     return user !== null;
   }
 
-  GoogleAuth() {
-    return this.AuthLogin(new auth.GoogleAuthProvider());
-    //return this.afAuth.signInWithPopup(new GoogleAuthProvider());
-    /*return this.AuthLogin(new auth.GoogleAuthProvider()).then((res: any) => {
-      this.router.navigate(['dashboard']);
-    });*/
-  }
-
-
-  *AuthLogin(provider: any) {
-    return this.afAuth
-      .signInWithPopup(provider)
-        //this.SetUserData(result.user);
-  };
-
-  
-
-  /*SetUserData(user: any) {
-    const userRef: AngularFirestoreDocument<any> = this.afs.doc(
-      'users / ${  user.uid }'
-    );
-
-    const userData = {
-      uid: user.uid,
-      email: user.email,
-      displayName: user.displayName,
-      photoURL: user.photoURL,
-      emailVerified: user.emailVerified,
-    };
-
-    return userRef
-      .set(userData, { merge: true })
-      .then(() => {
-        console.log('Document written successfully!');
+  /**
+   * Google Sign-In
+   */
+  GoogleAuth(): Promise<void> {
+    const provider = new GoogleAuthProvider();
+    return signInWithRedirect(this.auth, provider)
+      .then((result: UserCredential) => {
+        this.ngZone.run(() => {
+          this.router.navigate(['dashboard']); // Redirect after login
+        });
+        this.userData = result.user;
+        localStorage.setItem('user', JSON.stringify(this.userData));
       })
       .catch((error) => {
-        console.error('Error writing document: ', error);
+        console.error('Google Auth Error:', error);
       });
   }
-  */
-  SignOut() {
-    return this.afAuth.signOut().then(() => {
+
+  /**
+   * Sign Out
+   */
+  SignOut(): Promise<void> {
+    return this.auth.signOut().then(() => {
       localStorage.removeItem('user');
-      this.router.navigate(['']);
+      this.router.navigate(['']); // Redirect to home
     });
   }
 }
-
-
-
