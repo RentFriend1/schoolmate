@@ -12,7 +12,11 @@ export class SigninComponent {
     public authService: AuthService
   ) { }
 
-  signIn() {
-    this.authService.GoogleAuth();
+
+  signInPopup() {
+    this.authService.GoogleAuthPopup();
+  }
+  signInRedirect() {
+    this.authService.GoogleAuthRedirect();
   }
 }

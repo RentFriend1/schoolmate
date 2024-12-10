@@ -1,5 +1,5 @@
 import { Injectable, NgZone } from '@angular/core';
-import { Auth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, UserCredential,  } from '@angular/fire/auth';
+import { Auth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, UserCredential } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -35,7 +35,12 @@ export class AuthService {
   /**
    * Google Sign-In
    */
-  GoogleAuth(): Promise<void> {
+  
+
+  /**
+   * Redirect-based Google Auth - Currently Not in Use
+   */
+   GoogleAuthRedirect(): Promise<void> {
     const provider = new GoogleAuthProvider();
     return signInWithRedirect(this.auth, provider)
       .then((result: UserCredential) => {
@@ -48,7 +53,24 @@ export class AuthService {
       .catch((error) => {
         console.error('Google Auth Error:', error);
       });
-  }
+  } 
+
+
+   
+   GoogleAuthPopup(): Promise<void> {
+    const provider = new GoogleAuthProvider();
+    return signInWithPopup(this.auth, provider)
+      .then((result: UserCredential) => {
+        this.ngZone.run(() => {
+          this.router.navigate(['dashboard']); // Redirect after login
+        });
+        this.userData = result.user;
+        localStorage.setItem('user', JSON.stringify(this.userData));
+      })
+      .catch((error) => {
+        console.error('Google Auth Error:', error);
+      });
+  } 
 
   /**
    * Sign Out

@@ -10,8 +10,8 @@
 
       <input type="button"
              class="btn btnPrimary"
-             value="Log in"
-             (click)="authService.GoogleAuth()" />
+             value="Log in with Popup"
+             (click)="authService.GoogleAuthPopup()" />
     </form>
 
 
@@ -24,4 +24,10 @@
   </div>
 </div>
 
-<button (click)="signIn()">Sign In</button>
+<form>
+
+  <input type="button"
+         class="btn btnPrimary"
+         value="Log in with Redirect"
+         (click)="authService.GoogleAuthRedirect()" />
+</form>
