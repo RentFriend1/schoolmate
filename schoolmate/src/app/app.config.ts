@@ -12,6 +12,7 @@ import { provideStorage, getStorage } from '@angular/fire/storage';
 // Standalone components
 import { AppComponent } from './app.component';
 import { SigninComponent } from '../signin/signin.component';
+import { HomepageComponent } from '../homepage/homepage.component';
 
 export const enviroment = {
   apiKey: "AIzaSyA5KkP_tkUvrpbYJjtGnssQYr3atcZZn8s",
@@ -24,7 +25,8 @@ export const enviroment = {
 };
 
 const routes: Route[] = [
-  { path: '', component: SigninComponent, pathMatch: 'full' }
+  { path: '', component: SigninComponent, pathMatch: 'full' },
+  { path: 'homepage', component: HomepageComponent, pathMatch: 'full' }
 ];
 
 export const appConfig: ApplicationConfig = {

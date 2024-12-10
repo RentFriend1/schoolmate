@@ -45,7 +45,7 @@ export class AuthService {
     return signInWithRedirect(this.auth, provider)
       .then((result: UserCredential) => {
         this.ngZone.run(() => {
-          this.router.navigate(['dashboard']); // Redirect after login
+          this.router.navigate(['homepage']); // Redirect after login
         });
         this.userData = result.user;
         localStorage.setItem('user', JSON.stringify(this.userData));
@@ -62,7 +62,7 @@ export class AuthService {
     return signInWithPopup(this.auth, provider)
       .then((result: UserCredential) => {
         this.ngZone.run(() => {
-          this.router.navigate(['dashboard']); // Redirect after login
+          this.router.navigate(['homepage']); // Redirect after login
         });
         this.userData = result.user;
         localStorage.setItem('user', JSON.stringify(this.userData));
