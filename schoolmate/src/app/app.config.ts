@@ -13,8 +13,12 @@ import { provideStorage, getStorage } from '@angular/fire/storage';
 import { AppComponent } from './app.component';
 import { SigninComponent } from '../signin/signin.component';
 import { HomepageComponent } from '../homepage/homepage.component';
+import { NoticeComponent } from '../notice/notice.component';
+import { ProfileComponent } from '../profile/profile.component';
+import { NavbarComponent } from '../navbar/navbar.component';
 
-export const enviroment = {
+
+export const environment = {
   apiKey: "AIzaSyA5KkP_tkUvrpbYJjtGnssQYr3atcZZn8s",
   authDomain: "schoolmate-80431.firebaseapp.com",
   projectId: "schoolmate-80431",
@@ -26,14 +30,18 @@ export const enviroment = {
 
 const routes: Route[] = [
   { path: '', component: SigninComponent, pathMatch: 'full' },
-  { path: 'homepage', component: HomepageComponent, pathMatch: 'full' }
+  { path: 'homepage', component: HomepageComponent, pathMatch: 'full' },
+  { path: 'profile', component: ProfileComponent, pathMatch: 'full' },
+  { path: 'notice', component: NoticeComponent, pathMatch: 'full' },
+
 ];
+
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideHttpClient(),
-    provideFirebaseApp(() => initializeApp(enviroment)),
+    provideFirebaseApp(() => initializeApp(environment)),
     provideAuth(() => getAuth()),
     provideAnalytics(() => getAnalytics()),
     provideFirestore(() => getFirestore()),

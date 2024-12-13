@@ -55,7 +55,29 @@ export class AuthService {
       });
   } 
 
+  //SetUserData(user: any) {
+  //  const userRef: AngularFirestoreDocument<any> = this.afs.doc(
+  //    users / ${ user.uid }
+  //  );
 
+  //  const userData = {
+  //    uid: user.uid,
+  //    email: user.email,
+  //    displayName: user.displayName,
+  //    photoURL: user.photoURL,
+  //    emailVerified: user.emailVerified,
+  //    role: 'user',
+  //  };
+
+  //  return userRef
+  //    .set(userData, { merge: true })
+  //    .then(() => {
+  //      console.log('Document written successfully!');
+  //    })
+  //    .catch((error) => {
+  //      console.error('Error writing document: ', error);
+  //    });
+  //}
    
    GoogleAuthPopup(): Promise<void> {
     const provider = new GoogleAuthProvider();
