@@ -16,7 +16,5 @@ export class SigninComponent {
   signInPopup() {
     this.authService.GoogleAuthPopup();
   }
-  signInRedirect() {
-    this.authService.GoogleAuthRedirect();
-  }
+
 }

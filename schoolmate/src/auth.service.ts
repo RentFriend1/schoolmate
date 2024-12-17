@@ -32,28 +32,6 @@ export class AuthService {
     return user !== null;
   }
 
-  /**
-   * Google Sign-In
-   */
-  
-
-  /**
-   * Redirect-based Google Auth - Currently Not in Use
-   */
-   GoogleAuthRedirect(): Promise<void> {
-    const provider = new GoogleAuthProvider();
-    return signInWithRedirect(this.auth, provider)
-      .then((result: UserCredential) => {
-        this.ngZone.run(() => {
-          this.router.navigate(['homepage']); // Redirect after login
-        });
-        this.userData = result.user;
-        localStorage.setItem('user', JSON.stringify(this.userData));
-      })
-      .catch((error) => {
-        console.error('Google Auth Error:', error);
-      });
-  } 
 
   //SetUserData(user: any) {
   //  const userRef: AngularFirestoreDocument<any> = this.afs.doc(

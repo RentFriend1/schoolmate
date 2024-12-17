@@ -17,6 +17,9 @@ import { NoticeComponent } from '../notice/notice.component';
 import { ProfileComponent } from '../profile/profile.component';
 import { NavbarComponent } from '../navbar/navbar.component';
 
+import { AuthGuard } from '../authguard/auth.guard'; 
+
+
 
 export const environment = {
   apiKey: "AIzaSyA5KkP_tkUvrpbYJjtGnssQYr3atcZZn8s",
@@ -30,15 +33,18 @@ export const environment = {
 
 const routes: Route[] = [
   { path: '', component: SigninComponent, pathMatch: 'full' },
+  { path: 'signin', component: SigninComponent, pathMatch: 'full' },
   { path: 'homepage', component: HomepageComponent, pathMatch: 'full' },
   { path: 'profile', component: ProfileComponent, pathMatch: 'full' },
   { path: 'notice', component: NoticeComponent, pathMatch: 'full' },
+
 
 ];
 
 
 export const appConfig: ApplicationConfig = {
   providers: [
+
     provideRouter(routes),
     provideHttpClient(),
     provideFirebaseApp(() => initializeApp(environment)),
