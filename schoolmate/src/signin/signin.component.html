@@ -5,31 +5,31 @@
     <h2 class="active"> Sign In </h2>
 
     <br>
-   
-    <form>
 
-      <input type="button"
-             class="btn btnPrimary"
-             value="Log in with Popup"
-             (click)="authService.GoogleAuthPopup()" />
-    </form>
-    <br>
-  
-    <form>
-
-      <input type="button"
-             class="btn btnPrimary"
-             value="sign out!"
-             (click)="authService.SignOut()" />
-    </form>
-
-
-
-    <div id="formFooter">
-
+    <div *ngIf="!authService.isLoggedIn">
+      <!-- Show sign-in button when logged out -->
+      <form>
+        <input type="button"
+               class="btn btnPrimary"
+               value="Log in with Popup"
+               (click)="authService.GoogleAuthPopup()" />
+      </form>
     </div>
 
+    <div *ngIf="authService.isLoggedIn">
+      <!-- Show sign-out button when logged in -->
+      <form>
+        <input type="button"
+               class="btn btnPrimary"
+               value="Sign Out"
+               (click)="authService.SignOut()" />
+      </form>
+    </div>
+
+    <br>
+
+    <div id="formFooter">
+    </div>
 
   </div>
 </div>
-
