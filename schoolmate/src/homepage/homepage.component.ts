@@ -3,6 +3,7 @@ import { Auth, User } from '@angular/fire/auth';
 import { Firestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, serverTimestamp, arrayUnion, arrayRemove } from '@angular/fire/firestore';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; // Import FormsModule
+import { v4 as uuidv4 } from 'uuid'; // Import UUID library
 
 @Component({
   selector: 'app-homepage',
@@ -98,6 +99,7 @@ export class HomepageComponent implements OnInit {
     const currentUser = this.auth.currentUser;
     if (currentUser) {
       const response = {
+        id: uuidv4(), // Generate a unique ID for the response
         text: this.responseText[postId],
         author: currentUser.displayName,
         authorId: currentUser.uid, // Add authorId field
