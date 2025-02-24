@@ -1,0 +1,56 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: white; /* Updated colors */
+  width: 100%; /* Ensure it takes the full width */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+.login-card {
+  background: white;
+  padding: 60px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+}
+
+.login-heading {
+  font-size: 2.5em;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.login-btn {
+  padding: 15px 30px;
+  font-size: 1.2em;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  max-width: 300px;
+  margin: 10px 0;
+}
+
+.login-btn-primary {
+  background: #007bff; /* Change to project-specific blue color */
+  color: white;
+}
+
+.login-btn-secondary {
+  background: #6c757d; /* Change to a different shade of blue or gray */
+  color: white;
+}
+
+.login-btn:hover {
+  opacity: 0.9;
+}

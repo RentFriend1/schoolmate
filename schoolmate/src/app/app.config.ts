@@ -17,6 +17,7 @@ import { NoticeComponent } from '../notice/notice.component';
 import { ProfileComponent } from '../profile/profile.component';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { authGuard } from '../authguard/auth.guard';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 export const environment = {
   apiKey: "AIzaSyA5KkP_tkUvrpbYJjtGnssQYr3atcZZn8s",
@@ -58,6 +59,6 @@ export const appConfig: ApplicationConfig = {
     }),
     provideAnalytics(() => getAnalytics()),
     provideFirestore(() => getFirestore()),
-    provideStorage(() => getStorage())
+    provideStorage(() => getStorage()), provideAnimationsAsync()
   ]
 };

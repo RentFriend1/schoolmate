@@ -1,8 +1,68 @@
-<p>homepage works!</p>
-<br>
-<h1>welcome to our nice page!</h1>
-<br>
-if you see this, it means you have logged in with your google account.
-
-<h3>this is a homepage of our project.</h3>
-
+<div class="homepage-container">
+  <div class="welcome-section">
+    <h1 class="welcome-heading">Welcome to Schoolmate!</h1>
+    <p class="welcome-message">If you see this, it means you have logged in with your Google account.</p>
+  </div>
+  <div class="project-info">
+    <h3 class="project-heading">This is the homepage of our project.</h3>
+    <p class="project-description">Explore the various sections to find help, offer help, buy and sell school items, access educational materials, and more.</p>
+  </div>
+  <div class="post-form-section">
+    <h3 class="form-heading">{{ editingPostId ? 'Edit Post' : 'Create a Post' }}</h3>
+    <form (ngSubmit)="editingPostId ? updatePost() : createPost()">
+      <div class="form-group">
+        <label for="postTitle">Post Title</label>
+        <input type="text" id="postTitle" [(ngModel)]="postTitle" name="postTitle" required>
+      </div>
+      <div class="form-group">
+        <label for="postCategory">Category</label>
+        <select id="postCategory" [(ngModel)]="postCategory" name="postCategory" required>
+          <option value="lost">Lost</option>
+          <option value="found">Found</option>
+          <option value="materials">Materials</option>
+          <option value="i need help">I need help</option>
+          <option value="i can help">I can help</option>
+          <option value="materials">Materials</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="postDescription">Description</label>
+        <textarea id="postDescription" [(ngModel)]="postDescription" name="postDescription" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">{{ editingPostId ? 'Update Post' : 'Create Post' }}</button>
+    </form>
+  </div>
+  <div class="tiles-section">
+    <h3 class="tiles-heading">Latest Posts</h3>
+    <div class="tiles-grid">
+      <div class="tile" *ngFor="let post of posts">
+        <div class="tile-content">
+          <h4 class="tile-title">{{ post.title }}</h4>
+          <p class="tile-category">{{ post.category }}</p>
+          <p class="tile-description">{{ post.description }}</p>
+          <p class="tile-author">Posted by: {{ post.author }}</p>
+          <p class="tile-timestamp" *ngIf="post.createdAt">Posted on: {{ post.createdAt | date:'medium' }}</p>
+          <p class="tile-edited" *ngIf="post.editedAt">Edited on: {{ post.editedAt | date:'medium' }}</p>
+          <div class="responses">
+            <h5>Responses:</h5>
+            <div *ngFor="let response of post.responses" (click)="selectResponse(post.id, response.id)">
+              <p>{{ response.author }}: {{ response.text }}</p>
+              <button *ngIf="response.authorId === currentUser?.uid && selectedResponse[post.id] === response.id" class="btn btn-danger" (click)="deleteResponse(post.id, response)">Delete</button>
+            </div>
+            <form (ngSubmit)="addResponse(post.id)">
+              <div class="form-group">
+                <input type="text" [(ngModel)]="responseText[post.id]" name="responseText" placeholder="Add a response" required>
+              </div>
+              <button type="submit" class="btn btn-primary">Respond</button>
+            </form>
+          </div>
+        </div>
+        <div class="tile-buttons">
+          <button class="btn btn-danger" (click)="deletePost(post.id)">Delete</button>
+          <button class="btn btn-secondary" *ngIf="post.authorId === currentUser?.uid" (click)="startEditing(post)">Edit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,35 +1,14 @@
-<p>signin works!</p>
-<div class="wrapper fadeInDown">
-  <div id="formContent">
-
-    <h2 class="active"> Sign In </h2>
-
-    <br>
-
+<div class="login-container">
+  <div class="login-card">
+    <h2 class="login-heading">Sign In</h2>
     <div *ngIf="!authService.isLoggedIn">
       <!-- Show sign-in button when logged out -->
-      <form>
-        <input type="button"
-               class="btn btnPrimary"
-               value="Log in with Popup"
-               (click)="authService.GoogleAuthPopup()" />
-      </form>
+      <button class="login-btn login-btn-primary" (click)="authService.GoogleAuthPopup()">Log in with Google</button>
     </div>
-
     <div *ngIf="authService.isLoggedIn">
       <!-- Show sign-out button when logged in -->
-      <form>
-        <input type="button"
-               class="btn btnPrimary"
-               value="Sign Out"
-               (click)="authService.SignOut()" />
-      </form>
+      <button class="login-btn login-btn-secondary" (click)="authService.SignOut()">Sign Out</button>
     </div>
-
-    <br>
-
-    <div id="formFooter">
-    </div>
-
   </div>
 </div>
+

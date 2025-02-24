@@ -1,10 +1,19 @@
-<div *ngIf="userData">
-  <h2>Welcome, {{ userData.displayName }}</h2>
-  <p>Email: {{ userData.email }}</p>
-  <img *ngIf="userData.photoURL" [src]="userData.photoURL" alt="Profile Picture">
+<div class="profile-container" *ngIf="userData">
+  <div class="profile-header">
+    <h2 class="profile-heading">Welcome, {{ userData.displayName }}</h2>
+    <p class="profile-email">Email: {{ userData.email }}</p>
+  </div>
+  <div class="profile-picture-container" *ngIf="userData.photoURL">
+    <img class="profile-picture" [src]="userData.photoURL" alt="Profile Picture">
+  </div>
 </div>
 
-<div *ngIf="userDetails">
-  <h3>Additional Details</h3>
-  <p *ngFor="let detail of userDetails | keyvalue">{{ detail.key }}: {{ detail.value }}</p>
+<div class="profile-details" *ngIf="userDetails">
+  <h3 class="details-heading">Additional Details</h3>
+  <div class="details-grid">
+    <div class="detail-item" *ngFor="let detail of userDetails | keyvalue">
+      <span class="detail-key">{{ detail.key }}:</span>
+      <span class="detail-value">{{ detail.value }}</span>
+    </div>
+  </div>
 </div>
