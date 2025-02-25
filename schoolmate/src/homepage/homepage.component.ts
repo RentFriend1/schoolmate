@@ -68,8 +68,15 @@ export class HomepageComponent implements OnInit {
   }
 
   async deletePost(postId: string) {
-    await deleteDoc(doc(this.firestore, 'posts', postId));
-    this.posts = this.posts.filter(post => post.id !== postId);
+    const currentUser = this.auth.currentUser;
+    const post = this.posts.find(post => post.id === postId);
+
+    if (currentUser && post && post.authorId === currentUser.uid) {
+      await deleteDoc(doc(this.firestore, 'posts', postId));
+      this.posts = this.posts.filter(post => post.id !== postId);
+    } else {
+      console.warn('You are not authorized to delete this post.');
+    }
   }
 
   async updatePost() {

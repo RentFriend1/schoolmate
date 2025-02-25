@@ -59,7 +59,7 @@
           </div>
         </div>
         <div class="tile-buttons">
-          <button class="btn btn-danger" (click)="deletePost(post.id)">Delete</button>
+          <button class="btn btn-danger" *ngIf="post.authorId === currentUser?.uid" (click)="deletePost(post.id)">Delete</button>
           <button class="btn btn-secondary" *ngIf="post.authorId === currentUser?.uid" (click)="startEditing(post)">Edit</button>
         </div>
       </div>

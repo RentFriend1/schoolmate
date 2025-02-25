@@ -55,7 +55,8 @@
 }
 
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  margin-top: 10px;
 }
 
   .form-group label {
@@ -74,6 +75,10 @@
     box-sizing: border-box;
   }
 
+  .form-group textarea {
+    height: 150px; /* Increase the height of the textarea */
+  }
+
 .btn {
   padding: 10px 20px;
   font-size: 1em;
@@ -86,6 +91,30 @@
   background: #007bff;
   color: white;
 }
+
+.btn-danger {
+  background: #dc3545;
+  color: white;
+  margin-right: 10px; /* Add margin to the right of the delete button */
+  padding: 10px 27px; /* Ensure consistent padding */
+  font-size: 1em; /* Ensure consistent font size */
+  border: none; /* Ensure no border */
+  border-radius: 5px; /* Ensure consistent border radius */
+  cursor: pointer; /* Ensure consistent cursor */
+}
+
+  .btn-danger:hover {
+    opacity: 0.9;
+  }
+
+.btn-secondary {
+  background: #6c757d;
+  color: white;
+}
+
+  .btn-secondary:hover {
+    opacity: 0.9;
+  }
 
 .tiles-section {
   width: 100%;
@@ -149,24 +178,6 @@
   margin-top: 10px;
 }
 
-.btn-danger {
-  background: #dc3545;
-  color: white;
-  margin-right: 10px; /* Add margin to the right of the delete button */
-}
-
-  .btn-danger:hover {
-    opacity: 0.9;
-  }
-
-.btn-secondary {
-  background: #6c757d;
-  color: white;
-}
-
-  .btn-secondary:hover {
-    opacity: 0.9;
-  }
 .tile-timestamp {
   font-size: 0.9em;
   color: #999;
@@ -176,17 +187,16 @@
   font-size: 0.9em;
   color: #999;
 }
+
 .responses {
   margin-top: 20px;
 }
 
   .responses h5 {
     margin-bottom: 10px;
+    margin-top: 1px;
   }
 
   .responses p {
     margin: 5px 0;
   }
-
-
-

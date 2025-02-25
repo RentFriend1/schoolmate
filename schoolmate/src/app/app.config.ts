@@ -34,7 +34,7 @@ const routes: Route[] = [
   { path: 'signin', component: SigninComponent, pathMatch: 'full' },
   { path: 'homepage', component: HomepageComponent, pathMatch: 'full', canActivate: [authGuard] },
   { path: 'profile', component: ProfileComponent, pathMatch: 'full', canActivate: [authGuard] },
-  { path: 'notice', component: NoticeComponent, pathMatch: 'full', canActivate: [authGuard] },
+  { path: 'notice', component: NoticeComponent, pathMatch: 'full' },
 ];
 
 export const appConfig: ApplicationConfig = {
