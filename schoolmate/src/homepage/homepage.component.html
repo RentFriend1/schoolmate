@@ -44,6 +44,8 @@
           <p class="tile-author">Posted by: {{ post.author }}</p>
           <p class="tile-timestamp" *ngIf="post.createdAt">Posted on: {{ post.createdAt | date:'medium' }}</p>
           <p class="tile-edited" *ngIf="post.editedAt">Edited on: {{ post.editedAt | date:'medium' }}</p>
+        </div>
+        <div class="tile-responses">
           <div class="responses">
             <h5>Responses:</h5>
             <div *ngFor="let response of post.responses" (click)="selectResponse(post.id, response.id)">

@@ -172,31 +172,22 @@
   color: #999;
 }
 
-.tile-buttons {
-  display: flex;
-  justify-content: flex-start;
-  margin-top: 10px;
-}
-
-.tile-timestamp {
-  font-size: 0.9em;
-  color: #999;
-}
-
-.tile-edited {
-  font-size: 0.9em;
-  color: #999;
-}
-
-.responses {
+.tile-responses {
   margin-top: 20px;
 }
 
-  .responses h5 {
-    margin-bottom: 10px;
-    margin-top: 1px;
-  }
+.responses h5 {
+  margin-bottom: 10px;
+  margin-top: 1px;
+}
 
-  .responses p {
-    margin: 5px 0;
-  }
+.responses p {
+  margin: 5px 0;
+}
+
+.tile-buttons {
+  display: flex;
+  justify-content: flex-start;
+  gap: 1px; /* Add gap between buttons */
+  margin-top: 10px;
+}

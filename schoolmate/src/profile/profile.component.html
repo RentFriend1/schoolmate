@@ -12,8 +12,28 @@
   <h3 class="details-heading">Additional Details</h3>
   <div class="details-grid">
     <div class="detail-item" *ngFor="let detail of userDetails | keyvalue">
-      <span class="detail-key">{{ detail.key }}:</span>
+      <span class="detail-key">{{ formatKey(detail.key) }}:</span>
       <span class="detail-value">{{ detail.value }}</span>
     </div>
   </div>
 </div>
+
+<div class="profile-edit" *ngIf="userData">
+  <h3 class="edit-heading">Edit Your Information</h3>
+  <form (ngSubmit)="saveUserDetails()">
+    <div class="form-group">
+      <label for="school">School</label>
+      <input type="text" id="school" [(ngModel)]="school" name="school">
+    </div>
+    <div class="form-group">
+      <label for="schoolYear">School Year</label>
+      <input type="text" id="schoolYear" [(ngModel)]="schoolYear" name="schoolYear">
+    </div>
+    <div class="form-group">
+      <label for="fieldOfStudy">Field of Study</label>
+      <input type="text" id="fieldOfStudy" [(ngModel)]="fieldOfStudy" name="fieldOfStudy">
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+  </form>
+</div>
+
