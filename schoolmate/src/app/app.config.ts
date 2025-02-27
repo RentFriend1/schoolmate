@@ -18,6 +18,7 @@ import { ProfileComponent } from '../profile/profile.component';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { authGuard } from '../authguard/auth.guard';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { MaterialsComponent } from '../materials/materials.component';
 
 export const environment = {
   apiKey: "AIzaSyA5KkP_tkUvrpbYJjtGnssQYr3atcZZn8s",
@@ -35,6 +36,7 @@ const routes: Route[] = [
   { path: 'homepage', component: HomepageComponent, pathMatch: 'full', canActivate: [authGuard] },
   { path: 'profile', component: ProfileComponent, pathMatch: 'full', canActivate: [authGuard] },
   { path: 'notice', component: NoticeComponent, pathMatch: 'full', canActivate: [authGuard] },
+  { path: 'materials', component: MaterialsComponent, pathMatch: 'full', canActivate: [authGuard] },
 ];
 
 export const appConfig: ApplicationConfig = {

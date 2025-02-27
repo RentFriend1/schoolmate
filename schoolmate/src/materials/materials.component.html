@@ -1,0 +1,85 @@
+<div class="materials-container">
+  <h2>Upload Materials</h2>
+
+  <div class="upload-section">
+    <label for="file-input" class="file-input-label">
+      <i class="fas fa-upload"></i> Choose File
+    </label>
+    <input type="file" id="file-input" (change)="selectFile($event)" class="hidden-input" />
+    <button (click)="upload()" [disabled]="!selectedFiles" class="upload-button">
+      <i class="fas fa-cloud-upload-alt"></i> Upload
+    </button>
+
+    <div *ngIf="uploadProgress | async as progress" class="progress-bar-container">
+      <div class="progress-bar" [style.width.%]="progress"></div>
+      <span class="progress-text">{{ progress | number:'1.0-0' }}%</span>
+    </div>
+
+    <div *ngIf="downloadURL | async as url" class="download-link">
+      <a [href]="url" target="_blank"><i class="fas fa-download"></i> Download Material</a>
+    </div>
+  </div>
+
+  <div *ngIf="uploadTask" class="upload-status">
+    <!-- Use uploadStatus here -->
+    <div *ngIf="uploadStatus === 'paused'" class="status-paused">
+      <i class="fas fa-pause-circle"></i> Upload Paused
+    </div>
+    <div *ngIf="uploadStatus === 'running'" class="status-running">
+      <i class="fas fa-spinner fa-spin"></i> Upload Running
+    </div>
+    <div *ngIf="uploadStatus === 'success'" class="status-success">
+      <i class="fas fa-check-circle"></i> Upload Complete!
+    </div>
+    <div *ngIf="uploadStatus === 'error'" class="status-error">
+      <i class="fas fa-times-circle"></i> Upload Error!
+    </div>
+    <div *ngIf="uploadStatus === 'canceled'" class="status-canceled">
+      <i class="fas fa-ban"></i> Upload Cancelled
+    </div>
+
+    <div class="control-buttons">
+      <button (click)="pauseUpload()" *ngIf="uploadStatus === 'running'" class="control-button pause-button">
+        <i class="fas fa-pause"></i> Pause
+      </button>
+      <button (click)="resumeUpload()" *ngIf="uploadStatus === 'paused'" class="control-button resume-button">
+        <i class="fas fa-play"></i> Resume
+      </button>
+      <button (click)="cancelUpload()" *ngIf="uploadStatus !== 'success'" class="control-button cancel-button">
+        <i class="fas fa-times"></i> Cancel
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="fileUploads && fileUploads.length > 0" class="file-list">
+    <h3>Uploaded Files</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Filename</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let fileUpload of fileUploads">
+          <td>
+            <a [href]="fileUpload.url" target="_blank">{{ fileUpload.name }}</a>
+          </td>
+          <td>
+            <button (click)="deleteFileUpload(fileUpload)" class="delete-button">
+              <i class="fas fa-trash-alt"></i> Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="loading" class="loading-spinner">
+    <i class="fas fa-spinner fa-spin"></i> Loading files...
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    <i class="fas fa-exclamation-triangle"></i> {{ error }}
+  </div>
+</div>
