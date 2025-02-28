@@ -10,6 +10,9 @@ interface UserDetails {
   school?: string;
   schoolYear?: string;
   fieldOfStudy?: string;
+  userType?: string;
+  subjectsTaught?: string;
+  cabinetName?: string;
   [key: string]: any;
 }
 
@@ -27,9 +30,15 @@ export class ProfileComponent implements OnInit {
   userData: any = null; // Holds user authentication data
   userDetails: UserDetails | null = null; // Observable for Firestore user details
 
-  school: string = '';
-  schoolYear: string = '';
-  fieldOfStudy: string = '';
+  // Temporary object to hold form data
+  formData: UserDetails = {
+    school: '',
+    schoolYear: '',
+    fieldOfStudy: '',
+    userType: 'student',
+    subjectsTaught: '',
+    cabinetName: ''
+  };
 
   async ngOnInit() {
     const currentUser = this.auth.currentUser;
@@ -42,30 +51,30 @@ export class ProfileComponent implements OnInit {
         uid: currentUser.uid
       };
 
-      const userDocRef = doc(this.firestore, `users/${currentUser.uid}`);
-      const userDocSnap = await getDoc(userDocRef);
-      if (userDocSnap.exists()) {
-        this.userDetails = userDocSnap.data() as UserDetails;
-        this.school = this.userDetails.school || '';
-        this.schoolYear = this.userDetails.schoolYear || '';
-        this.fieldOfStudy = this.userDetails.fieldOfStudy || '';
-      } else {
-        console.warn("User details not found in Firestore.");
-      }
+      await this.fetchUserDetails(currentUser.uid);
     } else {
       console.warn("No authenticated user found.");
     }
   }
 
-  async saveUserDetails() {
+  async fetchUserDetails(uid: string) {
+    const userDocRef = doc(this.firestore, `users/${uid}`);
+    const userDocSnap = await getDoc(userDocRef);
+    if (userDocSnap.exists()) {
+      this.userDetails = userDocSnap.data() as UserDetails;
+      this.formData = { ...this.userDetails }; // Copy user details to form data
+    } else {
+      console.warn("User details not found in Firestore.");
+    }
+  }
+
+  async saveUserDetails(event: Event) {
+    event.preventDefault(); // Prevent the default form submission behavior
     if (this.userData) {
       const userDocRef = doc(this.firestore, `users/${this.userData.uid}`);
-      await setDoc(userDocRef, {
-        school: this.school,
-        schoolYear: this.schoolYear,
-        fieldOfStudy: this.fieldOfStudy
-      }, { merge: true });
+      await setDoc(userDocRef, this.formData, { merge: true });
       console.log("User details saved successfully.");
+      await this.fetchUserDetails(this.userData.uid); // Re-fetch user details after saving
     } else {
       console.warn("No authenticated user found.");
     }
@@ -79,6 +88,12 @@ export class ProfileComponent implements OnInit {
         return 'School Year';
       case 'fieldOfStudy':
         return 'Field of Study';
+      case 'userType':
+        return 'User Type';
+      case 'subjectsTaught':
+        return 'Subjects Taught';
+      case 'cabinetName':
+        return 'Cabinet Name';
       default:
         return key;
     }
