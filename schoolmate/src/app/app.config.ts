@@ -12,6 +12,7 @@ import { provideStorage, getStorage } from '@angular/fire/storage';
 
 // Standalone components
 import { SigninComponent } from '../signin/signin.component';
+import { MaterialsComponent } from '../materials/materials.component';
 import { HomepageComponent } from '../homepage/homepage.component';
 import { NoticeComponent } from '../notice/notice.component';
 import { ProfileComponent } from '../profile/profile.component';
@@ -34,6 +35,7 @@ const routes: Route[] = [
   { path: 'signin', component: SigninComponent, pathMatch: 'full' },
   { path: 'homepage', component: HomepageComponent, pathMatch: 'full', canActivate: [authGuard] },
   { path: 'profile', component: ProfileComponent, pathMatch: 'full', canActivate: [authGuard] },
+  { path: 'materials', component: MaterialsComponent, pathMatch: 'full', canActivate: [authGuard] },
   { path: 'notice', component: NoticeComponent, pathMatch: 'full' },
 ];
 
