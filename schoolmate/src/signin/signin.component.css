@@ -54,3 +54,8 @@ html, body {
 .login-btn:hover {
   opacity: 0.9;
 }
+
+/* Corrected CSS selector */
+.form-floating > label {
+  /* Your styles here */
+}

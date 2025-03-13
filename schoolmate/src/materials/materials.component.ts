@@ -51,11 +51,10 @@ export class MaterialsComponent implements OnInit {
     this.user$.subscribe((user) => {
       if (user) {
         this.userId = user.uid;
-        this.loadFiles(); // Load files only after userId is available
       } else {
         this.userId = null;
-        this.fileUploads = []; // Clear files if not logged in
       }
+      this.loadFiles(); // Load files regardless of user authentication
       this.userLoading = false; // Set loading to false after getting user (or lack thereof)
     });
   }
@@ -104,7 +103,7 @@ export class MaterialsComponent implements OnInit {
     console.log('File size:', file.size);
 
     this.currentFileUpload = { file: file, name: file.name, key: '' };
-    const storageRef = ref(this.storage, `materials/${this.userId}/${file.name}`);
+    const storageRef = ref(this.storage, `materials/${file.name}`);
     console.log('storageRef:', storageRef);
 
     this.uploadTask = uploadBytesResumable(storageRef, file);
@@ -172,15 +171,9 @@ export class MaterialsComponent implements OnInit {
 
   loadFiles(): void {
     console.log('loadFiles() called');
-    console.log('userId in loadFiles:', this.userId);
-
-    if (!this.userId) {
-      console.log('No userId in loadFiles, returning.');
-      return;
-    }
 
     this.loading = true;
-    const storageRef = ref(this.storage, `materials/${this.userId}`);
+    const storageRef = ref(this.storage, `materials`);
     console.log("storageRef in load files:", storageRef)
     this.listFiles(storageRef)
       .pipe(finalize(() => (this.loading = false)))
@@ -216,7 +209,7 @@ export class MaterialsComponent implements OnInit {
 
   deleteFileUpload(fileUpload: FileUpload): void {
     this.error = null;
-    const storageRef = ref(this.storage, `materials/${this.userId}/${fileUpload.name}`);
+    const storageRef = ref(this.storage, `materials/${fileUpload.name}`);
 
     from(deleteObject(storageRef))
       .pipe(

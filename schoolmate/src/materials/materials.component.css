@@ -1,219 +1,110 @@
-/* General Container */
-.materials-container {
-  font-family: sans-serif;
-  padding: 20px;
-  max-width: 800px; /* Or whatever width you prefer */
-  margin: 0 auto; /* Center the container */
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  background-color: #fff;
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
-/* Headings */
-h2, h3 {
+.materials-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #f5f7fa; /* Fallback to a solid color background */
+  width: 100%; /* Ensure it takes the full width */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+.materials-card {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 60px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 100%;
+  max-width: 600px;
+}
+
+.materials-heading {
+  font-size: 2.5em;
+  margin-bottom: 30px;
   color: #333;
 }
 
-/* Upload Section */
 .upload-section {
-  margin-bottom: 20px;
   display: flex;
-  flex-direction: column; /* Stack elements vertically */
-  align-items: flex-start; /* Align items to the start */
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-/* File Input (Hidden) */
-.hidden-input {
-  display: none; /* Hide the default file input */
+.file-input {
+  margin-right: 10px;
 }
 
-/* File Input Label (Styled as a Button) */
-.file-input-label {
-  background-color: #007bff; /* Blue */
-  color: white;
-  padding: 10px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-  display: inline-block; /* Allows setting width/height */
-  margin-bottom: 10px; /* Space between label and button */
-}
-
-  .file-input-label:hover {
-    background-color: #0056b3; /* Darker blue on hover */
-  }
-
-/* Upload Button */
-.upload-button {
-  background-color: #28a745; /* Green */
-  color: white;
-  padding: 10px 15px;
+.upload-btn {
+  padding: 15px 30px;
+  font-size: 1.2em;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  background: #007bff;
+  color: white;
 }
 
-  .upload-button:disabled {
-    background-color: #ccc;
+  .upload-btn:disabled {
+    background: #ccc;
     cursor: not-allowed;
   }
 
-  .upload-button:hover:not(:disabled) {
-    background-color: #218838; /* Darker green on hover */
-  }
-
-/* Progress Bar */
-.progress-bar-container {
-  width: 100%;
-  background-color: #f0f0f0;
-  border-radius: 5px;
-  margin-top: 10px;
-  height: 25px; /* Fixed height */
-  position: relative; /* For absolute positioning of text */
+.upload-percentage {
+  margin-left: 10px;
+  font-size: 1rem;
+  color: #666;
 }
 
-.progress-bar {
-  background-color: #007bff;
-  height: 100%;
-  border-radius: 5px;
-  transition: width 0.3s ease;
+.uploaded-files-section {
+  margin-top: 20px;
 }
 
-.progress-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+.uploaded-files-heading {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
   color: #333;
-  font-weight: bold;
 }
 
-/* Download Link */
-.download-link {
-  margin-top: 10px;
+.uploaded-files-list {
+  list-style: none;
+  padding: 0;
 }
 
-  .download-link a {
-    color: #007bff;
-    text-decoration: none;
-  }
-
-    .download-link a:hover {
-      text-decoration: underline;
-    }
-
-/* Upload Status */
-.upload-status {
-  margin-bottom: 20px;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+.uploaded-file-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
-.status-paused {
-  color: #ffc107;
-}
-/* Yellow */
-.status-running {
+.uploaded-file-link {
+  margin-right: 10px;
   color: #007bff;
-}
-/* Blue */
-.status-success {
-  color: #28a745;
-}
-/* Green */
-.status-error {
-  color: #dc3545;
-}
-/* Red */
-.status-canceled {
-  color: #6c757d;
-}
-/* Gray */
-
-/* Control Buttons (Pause, Resume, Cancel) */
-.control-buttons {
-  margin-top: 10px;
+  text-decoration: none;
 }
 
-.control-button {
-  background-color: transparent;
-  border: 1px solid #ccc;
-  color: #333;
+  .uploaded-file-link:hover {
+    text-decoration: underline;
+  }
+
+.delete-btn {
   padding: 5px 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-right: 5px; /* Space between buttons */
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-  .control-button:hover {
-    background-color: #f0f0f0;
-  }
-
-.pause-button {
-  border-color: #ffc107;
-  color: #ffc107;
-}
-
-.resume-button {
-  border-color: #007bff;
-  color: #007bff;
-}
-
-.cancel-button {
-  border-color: #dc3545;
-  color: #dc3545;
-}
-
-/* File List */
-.file-list {
-  margin-bottom: 20px;
-}
-
-  .file-list table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  .file-list th, .file-list td {
-    padding: 8px;
-    border-bottom: 1px solid #ddd;
-    text-align: left;
-  }
-
-  .file-list th {
-    background-color: #f8f9fa;
-  }
-
-/* Delete Button */
-.delete-button {
-  background-color: #dc3545; /* Red */
+  background: #f44336;
   color: white;
-  padding: 5px 10px;
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
-  .delete-button:hover {
-    background-color: #c82333; /* Darker red on hover */
-  }
-
-/* Loading Spinner */
-.loading-spinner {
-  color: #007bff;
-  font-size: 1.5em;
-  margin-bottom: 20px;
-}
-
-/* Error Message */
-.error-message {
-  color: #dc3545;
-  padding: 10px;
-  border: 1px solid #dc3545;
-  border-radius: 5px;
-  margin-bottom: 20px;
+.loading-section,
+.status-section,
+.error-section {
+  margin-top: 20px;
+  font-size: 1rem;
+  color: #666;
 }

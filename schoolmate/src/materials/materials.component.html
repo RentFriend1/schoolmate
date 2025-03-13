@@ -1,29 +1,31 @@
-<div>
-  <h2>Upload Materials</h2>
+<div class="materials-container">
+  <div class="materials-card">
+    <h2 class="materials-heading">Upload Materials</h2>
 
-  <div>
-    <input type="file" (change)="selectFile($event)" />
-    <button (click)="upload()" [disabled]="!selectedFiles">Upload</button>
-    <div>{{ percentage }}%</div>
-  </div>
+    <div class="upload-section">
+      <input type="file" (change)="selectFile($event)" class="file-input" />
+      <button (click)="upload()" [disabled]="!selectedFiles" class="upload-btn">Upload</button>
+      <div class="upload-percentage">{{ percentage }}%</div>
+    </div>
 
-  <div *ngIf="fileUploads && fileUploads.length > 0">
-    <h3>Uploaded Files</h3>
-    <ul>
-      <li *ngFor="let fileUpload of fileUploads">
-        <a [href]="fileUpload.url" target="_blank">{{ fileUpload.name }}</a>
-        <button (click)="deleteFileUpload(fileUpload)">Delete</button>
-      </li>
-    </ul>
-  </div>
+    <div *ngIf="fileUploads && fileUploads.length > 0" class="uploaded-files-section">
+      <h3 class="uploaded-files-heading">Uploaded Files</h3>
+      <ul class="uploaded-files-list">
+        <li *ngFor="let fileUpload of fileUploads" class="uploaded-file-item">
+          <a [href]="fileUpload.url" target="_blank" class="uploaded-file-link">{{ fileUpload.name }}</a>
+          <button (click)="deleteFileUpload(fileUpload)" class="delete-btn">Delete</button>
+        </li>
+      </ul>
+    </div>
 
-  <div *ngIf="loading">Loading files...</div>
+    <div *ngIf="loading" class="loading-section">Loading files...</div>
 
-  <div *ngIf="uploadStatus">
-    <p>Status: {{ uploadStatus }}</p>
-  </div>
+    <div *ngIf="uploadStatus" class="status-section">
+      <p>Status: {{ uploadStatus }}</p>
+    </div>
 
-  <div *ngIf="error">
-    Error: {{ error }}
+    <div *ngIf="error" class="error-section">
+      Error: {{ error }}
+    </div>
   </div>
 </div>
