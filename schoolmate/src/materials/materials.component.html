@@ -3,9 +3,17 @@
     <h2 class="materials-heading">Upload Materials</h2>
 
     <div class="upload-section">
-      <input type="file" (change)="selectFile($event)" class="file-input" />
-      <button (click)="upload()" [disabled]="!selectedFiles" class="upload-btn">Upload</button>
+      <label class="file-input-label">
+        Choose File
+        <input type="file" (change)="selectFile($event)" class="file-input" />
+      </label>
+      <span class="file-name">{{ selectedFileName }}</span>
       <div class="upload-percentage">{{ percentage }}%</div>
+      <button (click)="upload()" [disabled]="!selectedFiles" class="upload-btn">Upload</button>
+    </div>
+
+    <div *ngIf="showProgressBar" class="progress-bar-container">
+      <div class="progress-bar" [style.width.%]="percentage"></div>
     </div>
 
     <div *ngIf="fileUploads && fileUploads.length > 0" class="uploaded-files-section">

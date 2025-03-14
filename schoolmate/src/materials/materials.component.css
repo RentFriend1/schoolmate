@@ -33,21 +33,45 @@ html, body {
 .upload-section {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   margin-bottom: 20px;
 }
 
-.file-input {
-  margin-right: 10px;
-}
-
-.upload-btn {
-  padding: 15px 30px;
-  font-size: 1.2em;
+.file-input-label {
+  flex: 1;
+  padding: 10px 20px; /* Adjusted padding */
+  font-size: 1em; /* Adjusted font size */
   border: none;
   border-radius: 5px;
   cursor: pointer;
   background: #007bff;
   color: white;
+  text-align: center;
+  margin-right: 10px;
+}
+
+.file-input {
+  display: none;
+}
+
+.file-name {
+  flex: 2;
+  font-size: 1rem;
+  color: #333;
+  text-align: left;
+  margin-right: 10px;
+}
+
+.upload-btn {
+  width: 100px; /* Set a smaller fixed width */
+  padding: 10px 20px; /* Adjusted padding */
+  font-size: 1em; /* Adjusted font size */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background: #007bff;
+  color: white;
+  text-align: center;
 }
 
   .upload-btn:disabled {
@@ -56,9 +80,11 @@ html, body {
   }
 
 .upload-percentage {
-  margin-left: 10px;
+  flex: 1;
+  margin-right: 10px;
   font-size: 1rem;
   color: #666;
+  text-align: right;
 }
 
 .uploaded-files-section {
@@ -79,13 +105,16 @@ html, body {
 .uploaded-file-item {
   display: flex;
   align-items: center;
+  justify-content: flex-start; /* Align items to the left */
   margin-bottom: 10px;
 }
 
 .uploaded-file-link {
+  flex: 1;
   margin-right: 10px;
   color: #007bff;
   text-decoration: none;
+  text-align: left; /* Align text to the left */
 }
 
   .uploaded-file-link:hover {
@@ -93,6 +122,7 @@ html, body {
   }
 
 .delete-btn {
+  flex: 0 0 auto;
   padding: 5px 10px;
   background: #f44336;
   color: white;
@@ -107,4 +137,18 @@ html, body {
   margin-top: 20px;
   font-size: 1rem;
   color: #666;
+}
+
+.progress-bar-container {
+  width: 100%;
+  background-color: #f3f3f3;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.progress-bar {
+  height: 20px;
+  background-color: #007bff;
+  transition: width 0.4s ease;
 }

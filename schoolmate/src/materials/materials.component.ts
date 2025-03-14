@@ -36,6 +36,7 @@ export class MaterialsComponent implements OnInit {
   userId: string | null = null;
 
   selectedFiles?: FileList;
+  selectedFileName: string = ''; // Add property to store the selected file name
   currentFileUpload?: { file: File; name: string; key: string };
   percentage = 0;
   fileUploads: FileUpload[] = [];
@@ -46,6 +47,7 @@ export class MaterialsComponent implements OnInit {
   downloadURL: Observable<string> | null = null;
   uploadStatus: string | null = null;
   userLoading = true; // Flag for user authentication loading
+  showProgressBar = false; // Flag to control the visibility of the progress bar
 
   ngOnInit(): void {
     this.user$.subscribe((user) => {
@@ -61,10 +63,12 @@ export class MaterialsComponent implements OnInit {
 
   selectFile(event: any): void {
     this.selectedFiles = event.target.files;
+    this.selectedFileName = this.selectedFiles?.item(0)?.name || ''; // Update selected file name
     this.error = null;
     this.percentage = 0;
     this.downloadURL = null;
     this.uploadStatus = null;
+    this.showProgressBar = false; // Hide progress bar when selecting a new file
     console.log('Selected files:', this.selectedFiles); // Debug: Check selected files
   }
 
@@ -109,46 +113,49 @@ export class MaterialsComponent implements OnInit {
     this.uploadTask = uploadBytesResumable(storageRef, file);
     console.log('uploadTask created:', this.uploadTask);
 
-    this.uploadProgress = new Observable<number>((observer) => {
-      this.uploadTask!.on(
-        'state_changed',
-        (snapshot: UploadTaskSnapshot) => {
-          this.percentage = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-          observer.next(this.percentage);
-          this.uploadStatus = snapshot.state;
-          console.log('Upload progress:', this.percentage, 'State:', this.uploadStatus);
-        },
-        (error) => {
-          console.error('Upload Error:', error);
-          this.error = 'Upload failed: ' + error.message;
-          this.uploadStatus = 'error';
-          observer.error(error);
-        },
-        () => {
-          this.uploadStatus = 'success';
-          observer.complete();
-          console.log('Upload complete!');
-          getDownloadURL(this.uploadTask!.snapshot.ref)
-            .then((url) => {
-              console.log('Download URL:', url);
-              this.downloadURL = of(url);
-              if (this.currentFileUpload) {
-                const uploadedFile: FileUpload = {
-                  url: url,
-                  name: this.currentFileUpload.name,
-                  key: this.currentFileUpload.key, // Consider generating a unique key if needed
-                };
-                this.fileUploads.push(uploadedFile); // Add to the list
-                this.currentFileUpload = undefined; // Clear current file
-              }
-            })
-            .catch((error) => {
-              console.error('Download URL Error:', error);
-              this.error = 'Failed to get download URL: ' + error.message;
-            });
-        }
-      );
-    });
+    this.showProgressBar = true; // Show progress bar when upload starts
+
+    this.uploadTask.on(
+      'state_changed',
+      (snapshot: UploadTaskSnapshot) => {
+        this.percentage = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+        this.uploadStatus = snapshot.state;
+        console.log('Upload progress:', this.percentage, 'State:', this.uploadStatus);
+      },
+      (error) => {
+        console.error('Upload Error:', error);
+        this.error = 'Upload failed: ' + error.message;
+        this.uploadStatus = 'error';
+        this.showProgressBar = false; // Hide progress bar on error
+      },
+      () => {
+        this.uploadStatus = 'success';
+        console.log('Upload complete!');
+        getDownloadURL(this.uploadTask!.snapshot.ref)
+          .then((url) => {
+            console.log('Download URL:', url);
+            this.downloadURL = of(url);
+            if (this.currentFileUpload) {
+              const uploadedFile: FileUpload = {
+                url: url,
+                name: this.currentFileUpload.name,
+                key: this.currentFileUpload.key, // Consider generating a unique key if needed
+              };
+              this.fileUploads.push(uploadedFile); // Add to the list
+              this.currentFileUpload = undefined; // Clear current file
+              this.loadFiles(); // Refresh the list of uploaded files
+              this.showProgressBar = false; // Hide progress bar after upload completes
+              this.percentage = 0; // Reset percentage
+              this.selectedFileName = ''; // Clear selected file name
+            }
+          })
+          .catch((error) => {
+            console.error('Download URL Error:', error);
+            this.error = 'Failed to get download URL: ' + error.message;
+            this.showProgressBar = false; // Hide progress bar on error
+          });
+      }
+    );
   }
 
   pauseUpload() {
@@ -178,7 +185,7 @@ export class MaterialsComponent implements OnInit {
     this.listFiles(storageRef)
       .pipe(finalize(() => (this.loading = false)))
       .subscribe((fileUploads) => {
-        this.fileUploads = fileUploads;
+        this.fileUploads = fileUploads.sort((a, b) => a.name.localeCompare(b.name)); // Sort files by name
         console.log("files loaded", fileUploads)
       });
   }
@@ -224,3 +231,4 @@ export class MaterialsComponent implements OnInit {
       });
   }
 }
+
