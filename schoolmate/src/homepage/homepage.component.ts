@@ -3,12 +3,13 @@ import { Auth, User } from '@angular/fire/auth';
 import { Firestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, serverTimestamp, arrayUnion, arrayRemove } from '@angular/fire/firestore';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; // Import FormsModule
+import { RouterModule } from '@angular/router'; // Import RouterModule
 import { v4 as uuidv4 } from 'uuid'; // Import UUID library
 
 @Component({
   selector: 'app-homepage',
   standalone: true,
-  imports: [CommonModule, FormsModule], // Add FormsModule to imports
+  imports: [CommonModule, FormsModule, RouterModule], // Add RouterModule to imports
   templateUrl: './homepage.component.html',
   styleUrls: ['./homepage.component.css']
 })
@@ -156,3 +157,4 @@ export class HomepageComponent implements OnInit {
     this.selectedResponse[postId] = responseId;
   }
 }
+

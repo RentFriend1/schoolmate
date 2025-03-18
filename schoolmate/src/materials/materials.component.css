@@ -140,7 +140,7 @@ html, body {
 }
 
 .progress-bar-container {
-  width: 100%;
+  width: 100%;  
   background-color: #f3f3f3;
   border-radius: 4px;
   overflow: hidden;
@@ -150,5 +150,5 @@ html, body {
 .progress-bar {
   height: 20px;
   background-color: #007bff;
-  transition: width 0.4s ease;
+  transition: width 0.5s linear; /* Increased duration and changed easing function */
 }

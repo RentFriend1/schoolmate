@@ -37,14 +37,14 @@
     <h3 class="tiles-heading">Latest Posts</h3>
     <div class="tiles-grid">
       <div class="tile" *ngFor="let post of posts">
-        <div class="tile-content">
+        <a [routerLink]="['/post', post.id]" class="tile-content">
           <h4 class="tile-title">{{ post.title }}</h4>
           <p class="tile-category">{{ post.category }}</p>
           <p class="tile-description">{{ post.description }}</p>
           <p class="tile-author">Posted by: {{ post.author }}</p>
           <p class="tile-timestamp" *ngIf="post.createdAt">Posted on: {{ post.createdAt | date:'medium' }}</p>
           <p class="tile-edited" *ngIf="post.editedAt">Edited on: {{ post.editedAt | date:'medium' }}</p>
-        </div>
+        </a>
         <div class="tile-responses">
           <div class="responses">
             <h5>Responses:</h5>

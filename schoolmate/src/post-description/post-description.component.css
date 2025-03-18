@@ -1,0 +1,34 @@
+.post-description-container {
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+  .post-description-container h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #333;
+  }
+
+  .post-description-container p {
+    font-size: 1.2em;
+    color: #666;
+  }
+
+.responses {
+  margin-top: 20px;
+}
+
+  .responses h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #333;
+  }
+
+  .responses p {
+    font-size: 1.2em;
+    color: #666;
+  }

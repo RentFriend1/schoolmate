@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SigninComponent } from '../signin/signin.component';
+import { HomepageComponent } from '../homepage/homepage.component';
+import { PostDescriptionComponent } from '../post-description/post-description.component';
 
 export const routes: Routes = [
-  { path: '', component: SigninComponent }
+  { path: '', component: HomepageComponent },
+  { path: 'post/:id', component: PostDescriptionComponent },
 ];
 
 @NgModule({

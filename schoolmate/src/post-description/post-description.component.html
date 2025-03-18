@@ -1,0 +1,14 @@
+<div class="post-description-container" *ngIf="post">
+  <h2>{{ post.title }}</h2>
+  <p><strong>Category:</strong> {{ post.category }}</p>
+  <p><strong>Description:</strong> {{ post.description }}</p>
+  <p><strong>Posted by:</strong> {{ post.author }}</p>
+  <p *ngIf="post.createdAt"><strong>Posted on:</strong> {{ post.createdAt.toDate() | date:'medium' }}</p>
+  <p *ngIf="post.editedAt"><strong>Edited on:</strong> {{ post.editedAt.toDate() | date:'medium' }}</p>
+  <div class="responses" *ngIf="post.responses && post.responses.length > 0">
+    <h3>Responses:</h3>
+    <div *ngFor="let response of post.responses">
+      <p><strong>{{ response.author }}:</strong> {{ response.text }}</p>
+    </div>
+  </div>
+</div>
