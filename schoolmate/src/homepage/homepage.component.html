@@ -48,23 +48,14 @@
         <div class="tile-responses">
           <div class="responses">
             <h5>Responses:</h5>
-            <div *ngFor="let response of post.responses" (click)="selectResponse(post.id, response.id)">
+            <div *ngFor="let response of getFirstThreeResponses(post.responses)" (click)="selectResponse(post.id, response.id)">
               <p>{{ response.author }}: {{ response.text }}</p>
-              <button *ngIf="response.authorId === currentUser?.uid && selectedResponse[post.id] === response.id" class="btn btn-danger" (click)="deleteResponse(post.id, response)">Delete</button>
             </div>
-            <form (ngSubmit)="addResponse(post.id)">
-              <div class="form-group">
-                <input type="text" [(ngModel)]="responseText[post.id]" name="responseText" placeholder="Add a response" required>
-              </div>
-              <button type="submit" class="btn btn-primary">Respond</button>
-            </form>
           </div>
-        </div>
-        <div class="tile-buttons">
-          <button class="btn btn-danger" *ngIf="post.authorId === currentUser?.uid" (click)="deletePost(post.id)">Delete</button>
-          <button class="btn btn-secondary" *ngIf="post.authorId === currentUser?.uid" (click)="startEditing(post)">Edit</button>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+

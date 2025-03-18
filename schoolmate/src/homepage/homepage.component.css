@@ -148,28 +148,33 @@
 
 .tile-content {
   flex-grow: 1;
+  text-decoration: none; /* Remove underlining */
 }
 
 .tile-title {
   font-size: 1.5em;
   color: #007bff;
   margin: 0 0 10px 0;
+  text-decoration: none; /* Remove underlining */
 }
 
 .tile-category {
   font-size: 1em;
   color: #666;
   margin: 0 0 10px 0;
+  text-decoration: none; /* Remove underlining */
 }
 
 .tile-description {
   font-size: 1em;
   color: #333;
+  text-decoration: none; /* Remove underlining */
 }
 
 .tile-author {
   font-size: 0.9em;
   color: #999;
+  text-decoration: none; /* Remove underlining */
 }
 
 .tile-responses {

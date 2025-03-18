@@ -156,5 +156,10 @@ export class HomepageComponent implements OnInit {
   selectResponse(postId: string, responseId: string) {
     this.selectedResponse[postId] = responseId;
   }
+
+  getFirstThreeResponses(responses: any[]): any[] {
+    return responses.slice(0, 3);
+  }
 }
+
 
