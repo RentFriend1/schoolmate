@@ -1,14 +1,56 @@
 <div class="post-description-container" *ngIf="post">
-  <h2>{{ post.title }}</h2>
-  <p><strong>Category:</strong> {{ post.category }}</p>
-  <p><strong>Description:</strong> {{ post.description }}</p>
-  <p><strong>Posted by:</strong> {{ post.author }}</p>
-  <p *ngIf="post.createdAt"><strong>Posted on:</strong> {{ post.createdAt.toDate() | date:'medium' }}</p>
-  <p *ngIf="post.editedAt"><strong>Edited on:</strong> {{ post.editedAt.toDate() | date:'medium' }}</p>
+  <div class="post-header">
+    <h2>{{ post.title }}</h2>
+    <p><strong>Category:</strong> {{ post.category }}</p>
+    <p><strong>Posted by:</strong> {{ post.author }}</p>
+    <p *ngIf="post.createdAt"><strong>Posted on:</strong> {{ post.createdAt.toDate() | date:'medium' }}</p>
+    <p *ngIf="post.editedAt"><strong>Edited on:</strong> {{ post.editedAt.toDate() | date:'medium' }}</p>
+  </div>
+  <div class="post-content">
+    <p><strong>Description:</strong> {{ post.description }}</p>
+  </div>
   <div class="responses" *ngIf="post.responses && post.responses.length > 0">
     <h3>Responses:</h3>
-    <div *ngFor="let response of post.responses">
+    <div *ngFor="let response of post.responses" (click)="selectResponse(response.id)">
       <p><strong>{{ response.author }}:</strong> {{ response.text }}</p>
+      <button *ngIf="response.authorId === currentUser?.uid && selectedResponse === response.id" class="btn btn-danger" (click)="deleteResponse(response)">Delete</button>
     </div>
   </div>
+  <form (ngSubmit)="addResponse()" class="response-form">
+    <div class="form-group">
+      <input type="text" [(ngModel)]="responseText" name="responseText" placeholder="Add a response" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Respond</button>
+  </form>
+  <div class="post-buttons">
+    <button class="btn btn-danger" *ngIf="post.authorId === currentUser?.uid" (click)="deletePost()">Delete</button>
+    <button class="btn btn-secondary" *ngIf="post.authorId === currentUser?.uid" (click)="startEditing()">Edit</button>
+  </div>
+  <div *ngIf="editingPostId" class="edit-post-form">
+    <h3>Edit Post</h3>
+    <form (ngSubmit)="updatePost()">
+      <div class="form-group">
+        <label for="postTitle">Post Title</label>
+        <input type="text" id="postTitle" [(ngModel)]="post.title" name="postTitle" required>
+      </div>
+      <div class="form-group">
+        <label for="postCategory">Category</label>
+        <select id="postCategory" [(ngModel)]="post.category" name="postCategory" required>
+          <option value="lost">Lost</option>
+          <option value="found">Found</option>
+          <option value="materials">Materials</option>
+          <option value="i need help">I need help</option>
+          <option value="i can help">I can help</option>
+          <option value="materials">Materials</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="postDescription">Description</label>
+        <textarea id="postDescription" [(ngModel)]="post.description" name="postDescription" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Update Post</button>
+    </form>
+  </div>
 </div>
+

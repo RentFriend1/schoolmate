@@ -17,6 +17,7 @@ import { HomepageComponent } from '../homepage/homepage.component';
 import { NoticeComponent } from '../notice/notice.component';
 import { ProfileComponent } from '../profile/profile.component';
 import { NavbarComponent } from '../navbar/navbar.component';
+import { PostDescriptionComponent } from '../post-description/post-description.component'; // Import PostDescriptionComponent
 import { authGuard } from '../authguard/auth.guard';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
@@ -37,6 +38,7 @@ const routes: Route[] = [
   { path: 'profile', component: ProfileComponent, pathMatch: 'full', canActivate: [authGuard] },
   { path: 'materials', component: MaterialsComponent, pathMatch: 'full', canActivate: [authGuard] },
   { path: 'notice', component: NoticeComponent, pathMatch: 'full' },
+  { path: 'post/:id', component: PostDescriptionComponent }, // Add route for PostDescriptionComponent
 ];
 
 export const appConfig: ApplicationConfig = {
