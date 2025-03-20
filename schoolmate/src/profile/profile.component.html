@@ -31,6 +31,10 @@
       <span class="detail-key">Field of Study:</span>
       <span class="detail-value">{{ userDetails.fieldOfStudy }}</span>
     </div>
+    <div class="detail-item">
+      <span class="detail-key">Role:</span>
+      <span class="detail-value">{{ userDetails.role }}</span>
+    </div>
   </div>
 </div>
 
@@ -59,11 +63,24 @@
     </div>
     <div class="form-group">
       <label for="school">School</label>
-      <input type="text" id="school" [(ngModel)]="formData.school" name="school">
+      <select id="school" [(ngModel)]="formData.school" name="school">
+        <option value="SPSIT">SPSIT</option>
+        <option value="GKNM">GKNM</option>
+        <option value="GCA">GCA</option>
+        <option value="GYMB">GYMB</option>
+      </select>
     </div>
     <div class="form-group">
       <label for="fieldOfStudy">Field of Study</label>
       <input type="text" id="fieldOfStudy" [(ngModel)]="formData.fieldOfStudy" name="fieldOfStudy">
+    </div>
+    <div class="form-group">
+      <label for="role">Role</label>
+      <select id="role" [(ngModel)]="formData.role" name="role">
+        <option value="admin">Admin</option>
+        <option value="student">Student</option>
+        <option value="teacher">Teacher</option>
+      </select>
     </div>
     <button type="submit" class="btn btn-primary">Save</button>
   </form>

@@ -1,1 +1,25 @@
-<p>notice works!</p>
+<div class="notice-container">
+  <div class="post-form" *ngIf="userRole === 'admin' || userRole === userSchool">
+    <h3>Create a Post</h3>
+    <form (ngSubmit)="createPost()">
+      <div class="form-group">
+        <label for="postTitle">Post Title</label>
+        <input type="text" id="postTitle" [(ngModel)]="postTitle" name="postTitle" required>
+      </div>
+      <div class="form-group">
+        <label for="postContent">Content</label>
+        <textarea id="postContent" [(ngModel)]="postContent" name="postContent" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Create Post</button>
+    </form>
+  </div>
+  <div class="posts-section">
+    <h3>Posts for {{ userSchool }}</h3>
+    <div *ngFor="let post of posts" class="post">
+      <h4>{{ post.title }}</h4>
+      <p>{{ post.content }}</p>
+      <p><strong>Author:</strong> {{ post.author }}</p>
+      <p><strong>Posted on:</strong> {{ post.createdAt.toDate() | date:'medium' }}</p>
+    </div>
+  </div>
+</div>

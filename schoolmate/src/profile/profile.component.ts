@@ -2,8 +2,6 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Auth, User } from '@angular/fire/auth';
 import { Firestore, doc, getDoc, setDoc } from '@angular/fire/firestore';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { FormsModule } from '@angular/forms';
 
 interface UserDetails {
@@ -13,6 +11,7 @@ interface UserDetails {
   userType?: string;
   subjectsTaught?: string;
   cabinetName?: string;
+  role?: string; // Add role field
   [key: string]: any;
 }
 
@@ -37,7 +36,8 @@ export class ProfileComponent implements OnInit {
     fieldOfStudy: '',
     userType: 'student',
     subjectsTaught: '',
-    cabinetName: ''
+    cabinetName: '',
+    role: '' // Add role field
   };
 
   async ngOnInit() {
@@ -94,6 +94,8 @@ export class ProfileComponent implements OnInit {
         return 'Subjects Taught';
       case 'cabinetName':
         return 'Cabinet Name';
+      case 'role':
+        return 'Role'; // Add role field
       default:
         return key;
     }
