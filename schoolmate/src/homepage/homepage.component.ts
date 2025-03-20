@@ -161,5 +161,3 @@ export class HomepageComponent implements OnInit {
     return responses.slice(0, 3);
   }
 }
-
-
