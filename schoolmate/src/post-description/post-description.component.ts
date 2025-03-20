@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router'; // Import Router
 import { Firestore, doc, getDoc, updateDoc, arrayUnion, arrayRemove, serverTimestamp, deleteDoc } from '@angular/fire/firestore'; // Import deleteDoc
 import { Auth } from '@angular/fire/auth';
 import { CommonModule } from '@angular/common';
@@ -16,6 +16,7 @@ import { v4 as uuidv4 } from 'uuid';
 export class PostDescriptionComponent implements OnInit {
   private auth = inject(Auth);
   private firestore = inject(Firestore);
+  private router = inject(Router); // Inject Router
   post: any = null;
   responseText: string = '';
   editingPostId: string | null = null;
@@ -98,7 +99,7 @@ export class PostDescriptionComponent implements OnInit {
     if (currentUser && this.post && this.post.authorId === currentUser.uid) {
       const postRef = doc(this.firestore, 'posts', this.post.id);
       await deleteDoc(postRef);
-      this.post = null;
+      this.router.navigate(['/homepage']); // Redirect to homepage after deletion
     } else {
       console.warn('You are not authorized to delete this post.');
     }
@@ -108,4 +109,5 @@ export class PostDescriptionComponent implements OnInit {
     this.selectedResponse = responseId;
   }
 }
+
 
