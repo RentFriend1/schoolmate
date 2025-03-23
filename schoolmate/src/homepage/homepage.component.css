@@ -177,6 +177,18 @@
   text-decoration: none; /* Remove underlining */
 }
 
+.tile-timestamp {
+  font-size: 0.9em;
+  color: #999;
+  text-decoration: none; /* Remove underlining */
+}
+
+.tile-edited {
+  font-size: 0.9em;
+  color: #999;
+  text-decoration: none; /* Remove underlining */
+}
+
 .tile-responses {
   margin-top: 20px;
 }

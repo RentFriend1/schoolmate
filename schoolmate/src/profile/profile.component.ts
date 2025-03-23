@@ -8,10 +8,9 @@ interface UserDetails {
   school?: string;
   schoolYear?: string;
   fieldOfStudy?: string;
-  userType?: string;
+  userTypeRole?: string;
   subjectsTaught?: string;
   cabinetName?: string;
-  role?: string; // Add role field
   [key: string]: any;
 }
 
@@ -34,10 +33,9 @@ export class ProfileComponent implements OnInit {
     school: '',
     schoolYear: '',
     fieldOfStudy: '',
-    userType: 'student',
+    userTypeRole: 'student',
     subjectsTaught: '',
-    cabinetName: '',
-    role: '' // Add role field
+    cabinetName: ''
   };
 
   async ngOnInit() {
@@ -88,16 +86,16 @@ export class ProfileComponent implements OnInit {
         return 'School Year';
       case 'fieldOfStudy':
         return 'Field of Study';
-      case 'userType':
-        return 'User Type';
+      case 'userTypeRole':
+        return 'User Type and Role';
       case 'subjectsTaught':
         return 'Subjects Taught';
       case 'cabinetName':
         return 'Cabinet Name';
-      case 'role':
-        return 'Role'; // Add role field
       default:
         return key;
     }
   }
 }
+
+

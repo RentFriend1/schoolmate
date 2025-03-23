@@ -39,7 +39,7 @@ export class NoticeComponent implements OnInit {
       const userDocSnap = await getDoc(userDocRef);
       if (userDocSnap.exists()) {
         const userDetails = userDocSnap.data();
-        this.userRole = userDetails['role'];
+        this.userRole = userDetails['userTypeRole'];
         this.userSchool = userDetails['school'];
       }
     }

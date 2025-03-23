@@ -88,8 +88,7 @@ html, body {
 
 .post-buttons {
   display: flex;
-  justify-content: space-between;
-  width: 100%;
+  gap: 10px;
   margin-top: 20px;
 }
 
@@ -99,6 +98,11 @@ html, body {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+  }
+
+  .post-buttons .btn-primary {
+    background: #007bff;
+    color: white;
   }
 
   .post-buttons .btn-danger {
@@ -139,3 +143,7 @@ html, body {
     background: #007bff;
     color: white;
   }
+/* Add this to post-description.component.css */
+.button-same-width {
+  width: 150px; /* Set your desired width */
+}

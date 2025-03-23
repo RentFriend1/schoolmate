@@ -11,29 +11,29 @@
 <div class="profile-details" *ngIf="userDetails">
   <h3 class="details-heading">Additional Details</h3>
   <div class="details-grid">
-    <div class="detail-item" *ngIf="formData.userType !== 'teacher'">
+    <div class="detail-item" *ngIf="userDetails['userTypeRole'] !== 'teacher'">
       <span class="detail-key">School Year:</span>
-      <span class="detail-value">{{ userDetails.schoolYear }}</span>
+      <span class="detail-value">{{ userDetails['schoolYear'] }}</span>
     </div>
-    <div class="detail-item" *ngIf="formData.userType === 'teacher'">
+    <div class="detail-item" *ngIf="userDetails['userTypeRole'] === 'teacher'">
       <span class="detail-key">Subjects Taught:</span>
-      <span class="detail-value">{{ userDetails.subjectsTaught }}</span>
+      <span class="detail-value">{{ userDetails['subjectsTaught'] }}</span>
     </div>
-    <div class="detail-item" *ngIf="formData.userType === 'teacher'">
+    <div class="detail-item" *ngIf="userDetails['userTypeRole'] === 'teacher'">
       <span class="detail-key">Cabinet Name:</span>
-      <span class="detail-value">{{ userDetails.cabinetName }}</span>
+      <span class="detail-value">{{ userDetails['cabinetName'] }}</span>
     </div>
     <div class="detail-item">
       <span class="detail-key">School:</span>
-      <span class="detail-value">{{ userDetails.school }}</span>
+      <span class="detail-value">{{ userDetails['school'] }}</span>
     </div>
     <div class="detail-item">
       <span class="detail-key">Field of Study:</span>
-      <span class="detail-value">{{ userDetails.fieldOfStudy }}</span>
+      <span class="detail-value">{{ userDetails['fieldOfStudy'] }}</span>
     </div>
     <div class="detail-item">
       <span class="detail-key">Role:</span>
-      <span class="detail-value">{{ userDetails.role }}</span>
+      <span class="detail-value">{{ userDetails['role'] }}</span>
     </div>
   </div>
 </div>
@@ -42,28 +42,29 @@
   <h3 class="edit-heading">Edit Your Information</h3>
   <form (ngSubmit)="saveUserDetails($event)">
     <div class="form-group">
-      <label for="userType">User Type</label>
-      <select id="userType" [(ngModel)]="formData.userType" name="userType">
+      <label for="userTypeRole">User Type and Role</label>
+      <select id="userTypeRole" [(ngModel)]="formData['userTypeRole']" name="userTypeRole">
         <option value="student">Student</option>
         <option value="teacher">Teacher</option>
         <option value="ex-student">Ex-Student</option>
+        <option value="admin">Admin</option>
       </select>
     </div>
-    <div class="form-group" *ngIf="formData.userType !== 'teacher'">
+    <div class="form-group" *ngIf="formData['userTypeRole'] !== 'teacher'">
       <label for="schoolYear">School Year</label>
-      <input type="text" id="schoolYear" [(ngModel)]="formData.schoolYear" name="schoolYear">
+      <input type="text" id="schoolYear" [(ngModel)]="formData['schoolYear']" name="schoolYear">
     </div>
-    <div class="form-group" *ngIf="formData.userType === 'teacher'">
+    <div class="form-group" *ngIf="formData['userTypeRole'] === 'teacher'">
       <label for="subjectsTaught">Subjects Taught</label>
-      <input type="text" id="subjectsTaught" [(ngModel)]="formData.subjectsTaught" name="subjectsTaught">
+      <input type="text" id="subjectsTaught" [(ngModel)]="formData['subjectsTaught']" name="subjectsTaught">
     </div>
-    <div class="form-group" *ngIf="formData.userType === 'teacher'">
+    <div class="form-group" *ngIf="formData['userTypeRole'] === 'teacher'">
       <label for="cabinetName">Cabinet Name</label>
-      <input type="text" id="cabinetName" [(ngModel)]="formData.cabinetName" name="cabinetName">
+      <input type="text" id="cabinetName" [(ngModel)]="formData['cabinetName']" name="cabinetName">
     </div>
     <div class="form-group">
       <label for="school">School</label>
-      <select id="school" [(ngModel)]="formData.school" name="school">
+      <select id="school" [(ngModel)]="formData['school']" name="school">
         <option value="SPSIT">SPSIT</option>
         <option value="GKNM">GKNM</option>
         <option value="GCA">GCA</option>
@@ -72,16 +73,9 @@
     </div>
     <div class="form-group">
       <label for="fieldOfStudy">Field of Study</label>
-      <input type="text" id="fieldOfStudy" [(ngModel)]="formData.fieldOfStudy" name="fieldOfStudy">
-    </div>
-    <div class="form-group">
-      <label for="role">Role</label>
-      <select id="role" [(ngModel)]="formData.role" name="role">
-        <option value="admin">Admin</option>
-        <option value="student">Student</option>
-        <option value="teacher">Teacher</option>
-      </select>
+      <input type="text" id="fieldOfStudy" [(ngModel)]="formData['fieldOfStudy']" name="fieldOfStudy">
     </div>
     <button type="submit" class="btn btn-primary">Save</button>
   </form>
 </div>
+
