@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Auth, User } from '@angular/fire/auth';
 import { Firestore, doc, getDoc, setDoc } from '@angular/fire/firestore';
 import { FormsModule } from '@angular/forms';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 interface UserDetails {
   school?: string;
@@ -19,7 +20,14 @@ interface UserDetails {
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+  styleUrls: ['./profile.component.css'],
+  animations: [
+    trigger('slideToggle', [
+      state('void', style({ height: '0px', overflow: 'hidden' })),
+      state('*', style({ height: '*' })),
+      transition('void <=> *', animate('300ms ease-in-out'))
+    ])
+  ]
 })
 export class ProfileComponent implements OnInit {
   private auth = inject(Auth);
@@ -27,6 +35,7 @@ export class ProfileComponent implements OnInit {
 
   userData: any = null; // Holds user authentication data
   userDetails: UserDetails | null = null; // Observable for Firestore user details
+  showEditForm: boolean = false; // Controls the visibility of the edit form
 
   // Temporary object to hold form data
   formData: UserDetails = {
@@ -35,7 +44,8 @@ export class ProfileComponent implements OnInit {
     fieldOfStudy: '',
     userTypeRole: 'student',
     subjectsTaught: '',
-    cabinetName: ''
+    cabinetName: '',
+    field: ''
   };
 
   async ngOnInit() {
@@ -78,6 +88,10 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+  toggleEdit() {
+    this.showEditForm = !this.showEditForm;
+  }
+
   formatKey(key: string): string {
     switch (key) {
       case 'school':
@@ -92,10 +106,13 @@ export class ProfileComponent implements OnInit {
         return 'Subjects Taught';
       case 'cabinetName':
         return 'Cabinet Name';
+      case 'field':
+        return 'Field';
       default:
         return key;
     }
   }
 }
+
 
 
