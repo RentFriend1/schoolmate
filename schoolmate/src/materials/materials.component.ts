@@ -1,5 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms'; // Import FormsModule
 import {
   Storage,
   ref,
@@ -27,7 +28,7 @@ interface FileUpload {
   templateUrl: './materials.component.html',
   styleUrls: ['./materials.component.css'],
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule], // Add FormsModule here
 })
 export class MaterialsComponent implements OnInit {
   private storage: Storage = inject(Storage);
@@ -36,7 +37,7 @@ export class MaterialsComponent implements OnInit {
   userId: string | null = null;
 
   selectedFiles?: FileList;
-  selectedFileName: string = ''; // Add property to store the selected file name
+  selectedFileName: string = '';
   currentFileUpload?: { file: File; name: string; key: string };
   percentage = 0;
   fileUploads: FileUpload[] = [];
@@ -46,8 +47,28 @@ export class MaterialsComponent implements OnInit {
   uploadProgress: Observable<number> | null = null;
   downloadURL: Observable<string> | null = null;
   uploadStatus: string | null = null;
-  userLoading = true; // Flag for user authentication loading
-  showProgressBar = false; // Flag to control the visibility of the progress bar
+  userLoading = true;
+  showProgressBar = false;
+
+  // Folder Selection
+  selectedFolder: string = 'general/'; // Default folder
+  folders = [
+    { label: 'General', value: 'general/' },
+    { label: 'Mathematics', value: 'maths/' },
+    { label: 'English Language', value: 'english/' },
+    { label: 'Openlab', value: 'openlab/' },
+  ];
+
+  // File Type Selection
+  selectedFileType: string = 'all'; // Default to show all files
+  fileTypes = [
+    { label: 'All Files', value: 'all' },
+    { label: 'Documents (.docx, .pdf, .doc)', value: '.docx, .pdf, .doc' }, // Comma-separated
+    { label: 'Presentations (.pptx)', value: '.pptx' },
+    { label: 'Images (.jpg, .png, .gif)', value: '.jpg,.png,.gif' },
+    // Add more file types as needed
+  ];
+
 
   ngOnInit(): void {
     this.user$.subscribe((user) => {
@@ -56,108 +77,80 @@ export class MaterialsComponent implements OnInit {
       } else {
         this.userId = null;
       }
-      this.loadFiles(); // Load files regardless of user authentication
-      this.userLoading = false; // Set loading to false after getting user (or lack thereof)
+      this.loadFiles();
+      this.userLoading = false;
     });
   }
 
   selectFile(event: any): void {
     this.selectedFiles = event.target.files;
-    this.selectedFileName = this.selectedFiles?.item(0)?.name || ''; // Update selected file name
+    this.selectedFileName = this.selectedFiles?.item(0)?.name || '';
     this.error = null;
     this.percentage = 0;
     this.downloadURL = null;
     this.uploadStatus = null;
-    this.showProgressBar = false; // Hide progress bar when selecting a new file
-    console.log('Selected files:', this.selectedFiles); // Debug: Check selected files
+    this.showProgressBar = false;
   }
 
+
   upload(): void {
-    console.log('upload() method called');
-
-    if (this.userLoading) {
-      console.log('Waiting for user authentication...');
-      this.error = 'Waiting for user authentication...';
-      return; // Prevent upload until user is loaded
-    }
-
-    if (!this.userId) {
-      this.error = 'User not authenticated. Please log in.';
-      console.log('User not authenticated');
-      return; // Prevent upload if not authenticated
-    }
-
-    if (!this.selectedFiles) {
-      console.log('No files selected.');
-      this.error = 'No files selected.';
+    if (this.userLoading || !this.userId || !this.selectedFiles) {
+      this.error = this.userLoading ? 'Waiting for user authentication...' : 'User not authenticated or no files selected.';
       return;
     }
 
     const file: File | null = this.selectedFiles.item(0);
-    this.selectedFiles = undefined; // Clear selected files *after* getting the file
+    this.selectedFiles = undefined;
 
     if (!file) {
-      console.log('File is null or undefined.');
-      this.error = 'File is null or undefined.'; // Should not happen, but good to check
+      this.error = 'File is null or undefined.';
       return;
     }
-    console.log('File selected:', file);
-    console.log('File name:', file.name);
-    console.log('File type:', file.type);
-    console.log('File size:', file.size);
 
     this.currentFileUpload = { file: file, name: file.name, key: '' };
-    const storageRef = ref(this.storage, `materials/${file.name}`);
-    console.log('storageRef:', storageRef);
-
+    // Use selectedFolder here:
+    const storageRef = ref(this.storage, `materials/${this.selectedFolder}${file.name}`);
     this.uploadTask = uploadBytesResumable(storageRef, file);
-    console.log('uploadTask created:', this.uploadTask);
-
-    this.showProgressBar = true; // Show progress bar when upload starts
+    this.showProgressBar = true;
 
     this.uploadTask.on(
       'state_changed',
       (snapshot: UploadTaskSnapshot) => {
         this.percentage = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
         this.uploadStatus = snapshot.state;
-        console.log('Upload progress:', this.percentage, 'State:', this.uploadStatus);
       },
       (error) => {
         console.error('Upload Error:', error);
         this.error = 'Upload failed: ' + error.message;
         this.uploadStatus = 'error';
-        this.showProgressBar = false; // Hide progress bar on error
+        this.showProgressBar = false;
       },
       () => {
         this.uploadStatus = 'success';
-        console.log('Upload complete!');
         getDownloadURL(this.uploadTask!.snapshot.ref)
           .then((url) => {
-            console.log('Download URL:', url);
-            this.downloadURL = of(url);
             if (this.currentFileUpload) {
               const uploadedFile: FileUpload = {
                 url: url,
                 name: this.currentFileUpload.name,
-                key: this.currentFileUpload.key, // Consider generating a unique key if needed
+                key: this.currentFileUpload.key,
               };
-              this.fileUploads.push(uploadedFile); // Add to the list
-              this.currentFileUpload = undefined; // Clear current file
-              this.loadFiles(); // Refresh the list of uploaded files
-              this.showProgressBar = false; // Hide progress bar after upload completes
-              this.percentage = 0; // Reset percentage
-              this.selectedFileName = ''; // Clear selected file name
+              this.fileUploads.push(uploadedFile);
+              this.currentFileUpload = undefined;
+              this.loadFiles(); //refresh
+              this.showProgressBar = false;
+              this.percentage = 0;
+              this.selectedFileName = '';
             }
           })
           .catch((error) => {
             console.error('Download URL Error:', error);
             this.error = 'Failed to get download URL: ' + error.message;
-            this.showProgressBar = false; // Hide progress bar on error
+            this.showProgressBar = false;
           });
       }
     );
   }
-
   pauseUpload() {
     if (this.uploadTask) {
       this.uploadTask.pause();
@@ -177,18 +170,18 @@ export class MaterialsComponent implements OnInit {
   }
 
   loadFiles(): void {
-    console.log('loadFiles() called');
-
     this.loading = true;
-    const storageRef = ref(this.storage, `materials`);
-    console.log("storageRef in load files:", storageRef)
+    const storageRef = ref(this.storage, `materials/${this.selectedFolder}`);
     this.listFiles(storageRef)
-      .pipe(finalize(() => (this.loading = false)))
+      .pipe(
+        finalize(() => (this.loading = false)),
+        map(fileUploads => this.filterFilesByType(fileUploads)) // Filter by type *after* listing
+      )
       .subscribe((fileUploads) => {
-        this.fileUploads = fileUploads.sort((a, b) => a.name.localeCompare(b.name)); // Sort files by name
-        console.log("files loaded", fileUploads)
+        this.fileUploads = fileUploads.sort((a, b) => a.name.localeCompare(b.name));
       });
   }
+
 
   private listFiles(storageReference: StorageReference): Observable<FileUpload[]> {
     return from(listAll(storageReference)).pipe(
@@ -202,7 +195,7 @@ export class MaterialsComponent implements OnInit {
             map((url) => ({ url: url, name: itemRef.name, key: '' })),
             catchError((err) => {
               console.error('Error getting download URL for', itemRef.name, err);
-              return of(null); // Handle errors gracefully
+              return of(null);
             })
           )
         );
@@ -213,17 +206,31 @@ export class MaterialsComponent implements OnInit {
       })
     );
   }
+  // Add filtering logic
+  private filterFilesByType(fileUploads: FileUpload[]): FileUpload[] {
+    if (this.selectedFileType === 'all') {
+      return fileUploads; // No filtering needed
+    }
+
+    const allowedExtensions = this.selectedFileType.split(',');
+    return fileUploads.filter(fileUpload => {
+      const fileExtension = '.' + fileUpload.name.split('.').pop()!.toLowerCase(); // Get lowercase extension
+      return allowedExtensions.includes(fileExtension);
+    });
+  }
+
 
   deleteFileUpload(fileUpload: FileUpload): void {
     this.error = null;
-    const storageRef = ref(this.storage, `materials/${fileUpload.name}`);
+    // Delete from the correct path:
+    const storageRef = ref(this.storage, `materials/${this.selectedFolder}${fileUpload.name}`);
 
     from(deleteObject(storageRef))
       .pipe(
         catchError((error) => {
           console.error('Delete Error:', error);
           this.error = 'Delete failed: ' + error.message;
-          return of(null); // Handle delete errors
+          return of(null);
         })
       )
       .subscribe(() => {
@@ -231,4 +238,3 @@ export class MaterialsComponent implements OnInit {
       });
   }
 }
-

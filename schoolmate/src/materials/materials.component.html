@@ -2,6 +2,23 @@
   <div class="materials-card">
     <h2 class="materials-heading">Upload Materials</h2>
 
+    <!-- Dropdowns in a Flex Container -->
+    <div class="dropdowns-container">
+      <div class="folder-selection">
+        <label for="folder-select">Select Folder:</label>
+        <select id="folder-select" [(ngModel)]="selectedFolder" (change)="loadFiles()" class="folder-dropdown">
+          <option *ngFor="let folder of folders" [value]="folder.value">{{ folder.label }}</option>
+        </select>
+      </div>
+
+      <div class="file-type-selection">
+        <label for="file-type-select">Filter by File Type:</label>
+        <select id="file-type-select" [(ngModel)]="selectedFileType" (change)="loadFiles()" class="file-type-dropdown">
+          <option *ngFor="let type of fileTypes" [value]="type.value">{{ type.label }}</option>
+        </select>
+      </div>
+    </div>
+
     <div class="upload-section">
       <label class="file-input-label">
         Choose File
@@ -27,11 +44,9 @@
     </div>
 
     <div *ngIf="loading" class="loading-section">Loading files...</div>
-
     <div *ngIf="uploadStatus" class="status-section">
       <p>Status: {{ uploadStatus }}</p>
     </div>
-
     <div *ngIf="error" class="error-section">
       Error: {{ error }}
     </div>

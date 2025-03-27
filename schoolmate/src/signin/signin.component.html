@@ -1,6 +1,7 @@
 <div class="login-container">
   <div class="login-card">
     <h2 class="login-heading">Sign In</h2>
+    <h6>to Schoolmate via Google account</h6>
     <div *ngIf="!authService.isLoggedIn">
       <!-- Show sign-in button when logged out -->
       <button class="login-btn login-btn-primary" (click)="authService.GoogleAuthPopup()">Log in with Google</button>
