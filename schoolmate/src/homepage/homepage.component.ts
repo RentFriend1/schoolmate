@@ -43,7 +43,9 @@ export class HomepageComponent implements OnInit {
         author: currentUser.displayName,
         authorId: currentUser.uid,
         createdAt: serverTimestamp(),
-        responses: []
+        responses: [],
+        votes: 0, // Initialize votes
+        votedBy: {} // Initialize votedBy
       };
       const docRef = await addDoc(collection(this.firestore, 'posts'), post);
       this.posts.push({ id: docRef.id, ...post, createdAt: new Date() });
@@ -63,9 +65,14 @@ export class HomepageComponent implements OnInit {
         id: doc.id,
         ...data,
         createdAt: data['createdAt'] ? (data['createdAt'].toDate ? data['createdAt'].toDate() : new Date(data['createdAt'])) : null,
-        editedAt: data['editedAt'] ? (data['editedAt'].toDate ? data['editedAt'].toDate() : new Date(data['editedAt'])) : null
+        editedAt: data['editedAt'] ? (data['editedAt'].toDate ? data['editedAt'].toDate() : new Date(data['editedAt'])) : null,
+        votes: data['votes'] || 0, // Ensure votes is initialized
+        votedBy: data['votedBy'] || {} // Ensure votedBy is initialized
       };
     });
+
+    // Sort posts by votes in descending order
+    this.posts.sort((a, b) => b.votes - a.votes);
   }
 
   async deletePost(postId: string) {
@@ -159,5 +166,40 @@ export class HomepageComponent implements OnInit {
 
   getFirstThreeResponses(responses: any[]): any[] {
     return responses.slice(0, 3);
+  }
+
+  async votePost(postId: string, voteType: 'upvote' | 'downvote') {
+    const currentUser = this.auth.currentUser;
+    if (!currentUser) {
+      console.warn('No authenticated user found.');
+      return;
+    }
+
+    const postRef = doc(this.firestore, 'posts', postId);
+    const post = this.posts.find(post => post.id === postId);
+    if (post) {
+      const userVote = post.votedBy[currentUser.uid];
+      let newVotes = post.votes || 0;
+
+      if (voteType === 'upvote') {
+        if (userVote !== 'upvote') {
+          // User is adding an upvote or changing from downvote to upvote
+          newVotes += userVote === 'downvote' ? 2 : 1;
+          post.votedBy[currentUser.uid] = 'upvote';
+        }
+      } else if (voteType === 'downvote') {
+        if (userVote !== 'downvote') {
+          // User is adding a downvote or changing from upvote to downvote
+          newVotes += userVote === 'upvote' ? -2 : -1;
+          post.votedBy[currentUser.uid] = 'downvote';
+        }
+      }
+
+      await updateDoc(postRef, { votes: newVotes, votedBy: post.votedBy });
+      post.votes = newVotes;
+
+      // Re-sort posts after voting
+      this.posts.sort((a, b) => b.votes - a.votes);
+    }
   }
 }

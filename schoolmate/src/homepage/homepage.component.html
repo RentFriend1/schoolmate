@@ -44,6 +44,11 @@
           <p class="tile-timestamp" *ngIf="post.createdAt">Posted on: {{ post.createdAt | date:'medium' }}</p>
           <p class="tile-edited" *ngIf="post.editedAt">Edited on: {{ post.editedAt | date:'medium' }}</p>
         </a>
+        <div class="tile-votes">
+          <i class="fas fa-arrow-up" (click)="votePost(post.id, 'upvote')"></i>
+          <span>{{ post.votes || 0 }}</span>
+          <i class="fas fa-arrow-down" (click)="votePost(post.id, 'downvote')"></i>
+        </div>
         <div class="tile-responses">
           <div class="responses">
             <h5>Responses:</h5>
@@ -56,5 +61,3 @@
     </div>
   </div>
 </div>
-
-

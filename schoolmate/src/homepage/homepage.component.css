@@ -208,3 +208,23 @@
   gap: 1px; /* Add gap between buttons */
   margin-top: 10px;
 }
+
+.tile-votes {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+  .tile-votes i {
+    cursor: pointer;
+    font-size: 1.5em;
+    color: #007bff;
+  }
+
+    .tile-votes i:hover {
+      color: #0056b3;
+    }
+
+  .tile-votes span {
+    font-size: 1.2em;
+  }
