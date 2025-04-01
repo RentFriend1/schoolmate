@@ -13,6 +13,11 @@
     <h3>Responses:</h3>
     <div *ngFor="let response of post.responses" (click)="selectResponse(response.id)">
       <p><strong>{{ response.author }}:</strong> {{ response.text }}</p>
+      <div class="response-votes">
+        <i class="fas fa-arrow-up" (click)="voteResponse(post.id, response.id, 'upvote')"></i>
+        <span>{{ response.votes || 0 }}</span>
+        <i class="fas fa-arrow-down" (click)="voteResponse(post.id, response.id, 'downvote')"></i>
+      </div>
       <button *ngIf="response.authorId === currentUser?.uid && selectedResponse === response.id" class="btn btn-danger button-same-width" (click)="deleteResponse(response)">Delete</button>
     </div>
   </div>

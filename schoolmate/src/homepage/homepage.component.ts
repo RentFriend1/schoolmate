@@ -24,6 +24,7 @@ export class HomepageComponent implements OnInit {
   posts: any[] = [];
   editingPostId: string | null = null;
   selectedResponse: { [key: string]: string | null } = {}; // Add property to track selected response for each post
+  initialVotes: { [key: string]: number } = {}; // Add property to store initial votes for each post
 
   async ngOnInit() {
     await this.loadPosts(); // Ensure loadPosts is called when the component initializes
@@ -69,6 +70,11 @@ export class HomepageComponent implements OnInit {
         votes: data['votes'] || 0, // Ensure votes is initialized
         votedBy: data['votedBy'] || {} // Ensure votedBy is initialized
       };
+    });
+
+    // Store initial votes for each post
+    this.posts.forEach(post => {
+      this.initialVotes[post.id] = post.votes;
     });
 
     // Sort posts by votes in descending order
@@ -182,13 +188,21 @@ export class HomepageComponent implements OnInit {
       let newVotes = post.votes || 0;
 
       if (voteType === 'upvote') {
-        if (userVote !== 'upvote') {
+        if (userVote === 'upvote') {
+          // User is removing their upvote, reset to initial votes
+          newVotes = this.initialVotes[post.id];
+          delete post.votedBy[currentUser.uid];
+        } else {
           // User is adding an upvote or changing from downvote to upvote
           newVotes += userVote === 'downvote' ? 2 : 1;
           post.votedBy[currentUser.uid] = 'upvote';
         }
       } else if (voteType === 'downvote') {
-        if (userVote !== 'downvote') {
+        if (userVote === 'downvote') {
+          // User is removing their downvote, reset to initial votes
+          newVotes = this.initialVotes[post.id];
+          delete post.votedBy[currentUser.uid];
+        } else {
           // User is adding a downvote or changing from upvote to downvote
           newVotes += userVote === 'upvote' ? -2 : -1;
           post.votedBy[currentUser.uid] = 'downvote';

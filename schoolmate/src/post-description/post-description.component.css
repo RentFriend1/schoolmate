@@ -147,3 +147,23 @@ html, body {
 .button-same-width {
   width: 150px; /* Set your desired width */
 }
+
+.response-votes {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+  .response-votes i {
+    cursor: pointer;
+    font-size: 1.5em;
+    color: #007bff;
+  }
+
+    .response-votes i:hover {
+      color: #0056b3;
+    }
+
+  .response-votes span {
+    font-size: 1.2em;
+  }
