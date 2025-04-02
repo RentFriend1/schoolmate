@@ -11,8 +11,10 @@
   </div>
   <div class="responses" *ngIf="post.responses && post.responses.length > 0">
     <h3>Responses:</h3>
-    <div *ngFor="let response of post.responses" (click)="selectResponse(response.id)">
-      <p><strong>{{ response.author }}:</strong> {{ response.text }}</p>
+    <div *ngFor="let response of post.responses" class="response-item" (click)="selectResponse(response.id)">
+      <div class="response-content">
+        <p><strong>{{ response.author }}:</strong> {{ response.text }}</p>
+      </div>
       <div class="response-votes">
         <i class="fas fa-arrow-up" (click)="voteResponse(post.id, response.id, 'upvote')"></i>
         <span>{{ response.votes || 0 }}</span>
