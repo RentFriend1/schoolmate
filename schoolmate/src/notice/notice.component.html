@@ -1,7 +1,8 @@
 <div class="notice-container">
   <div class="post-form" *ngIf="userRole === 'admin' || userRole === userSchool">
-    <h3>Create a Post</h3>
-    <form (ngSubmit)="createPost()">
+    <h3 *ngIf="!editingPostId">Create a Post</h3>
+    <h3 *ngIf="editingPostId">Edit Post</h3>
+    <form (ngSubmit)="editingPostId ? updatePost() : createPost()">
       <div class="form-group">
         <label for="postTitle">Post Title</label>
         <input type="text" id="postTitle" [(ngModel)]="postTitle" name="postTitle" required>
@@ -10,7 +11,12 @@
         <label for="postContent">Content</label>
         <textarea id="postContent" [(ngModel)]="postContent" name="postContent" required></textarea>
       </div>
-      <button type="submit" class="btn btn-primary">Create Post</button>
+      <button type="submit" class="btn btn-primary">
+        {{ editingPostId ? 'Update Post' : 'Create Post' }}
+      </button>
+      <button *ngIf="editingPostId" type="button" class="btn btn-primary" (click)="cancelEdit()" style="margin-left: 10px;">
+        Cancel
+      </button>
     </form>
   </div>
   <div class="posts-section">
@@ -20,7 +26,10 @@
       <p>{{ post.content }}</p>
       <p><strong>Author:</strong> {{ post.author }}</p>
       <p><strong>Posted on:</strong> {{ post.createdAt.toDate() | date:'medium' }}</p>
+      <div *ngIf="userRole === 'admin'" class="post-actions">
+        <button class="btn btn-secondary" (click)="editPost(post)">Edit</button>
+        <button class="btn btn-danger" (click)="deletePost(post.id)">Delete</button>
+      </div>
     </div>
   </div>
 </div>
-

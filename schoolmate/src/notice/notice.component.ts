@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
-import { Firestore, collection, addDoc, getDocs, query, where, serverTimestamp, doc, getDoc } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, getDocs, query, where, serverTimestamp, doc, getDoc, deleteDoc, updateDoc } from '@angular/fire/firestore';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -20,6 +20,7 @@ export class NoticeComponent implements OnInit {
   posts: any[] = [];
   userRole: string = '';
   userSchool: string = '';
+  editingPostId: string | null = null;
   schools: string[] = ['SPSIT', 'GKNM', 'GCA', 'GYMB'];
   roles: string[] = ['admin', 'student', 'teacher'];
 
@@ -73,5 +74,45 @@ export class NoticeComponent implements OnInit {
       this.posts = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     }
   }
-}
 
+  async deletePost(postId: string) {
+    try {
+      const postDocRef = doc(this.firestore, `notices/${postId}`);
+      await deleteDoc(postDocRef);
+      this.posts = this.posts.filter(post => post.id !== postId); // Update local posts array
+    } catch (error) {
+      console.error('Error deleting post:', error);
+    }
+  }
+
+  editPost(post: any) {
+    this.postTitle = post.title;
+    this.postContent = post.content;
+    this.editingPostId = post.id;
+  }
+
+  async updatePost() {
+    if (this.editingPostId) {
+      try {
+        const postDocRef = doc(this.firestore, `notices/${this.editingPostId}`);
+        await updateDoc(postDocRef, {
+          title: this.postTitle,
+          content: this.postContent,
+          editedAt: serverTimestamp()
+        });
+        this.editingPostId = null;
+        this.postTitle = '';
+        this.postContent = '';
+        await this.loadPosts(); // Refresh posts
+      } catch (error) {
+        console.error('Error updating post:', error);
+      }
+    }
+  }
+
+  cancelEdit() {
+    this.editingPostId = null;
+    this.postTitle = '';
+    this.postContent = '';
+  }
+}

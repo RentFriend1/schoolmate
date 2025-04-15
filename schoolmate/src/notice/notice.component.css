@@ -32,7 +32,8 @@
     box-sizing: border-box;
   }
 
-.btn-primary {
+.btn-primary,
+.btn-secondary.cancel-button {
   padding: 10px 20px;
   font-size: 1em;
   border: none;
@@ -63,3 +64,15 @@
     margin: 5px 0;
     color: #333;
   }
+
+.post-actions {
+  display: flex;
+  gap: 10px; /* Adds space between the Edit and Delete buttons */
+}
+
+.btn-secondary,
+.btn-danger {
+  padding: 3px 10px; /* Keeps the original styles for Edit and Delete buttons */
+  width: 70px; /* Ensures both buttons have the same length */
+  text-align: center; /* Centers the text inside the buttons */
+}
