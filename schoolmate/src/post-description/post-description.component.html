@@ -1,13 +1,18 @@
 <div class="post-description-container" *ngIf="post">
-  <div class="post-header">
-    <h2>{{ post.title }}</h2>
-    <p><strong>Category:</strong> {{ post.category }}</p>
-    <p><strong>Posted by:</strong> {{ post.author }}</p>
-    <p *ngIf="post.createdAt"><strong>Posted on:</strong> {{ post.createdAt.toDate() | date:'medium' }}</p>
-    <p *ngIf="post.editedAt"><strong>Edited on:</strong> {{ post.editedAt.toDate() | date:'medium' }}</p>
-  </div>
-  <div class="post-content">
-    <p><strong>Description:</strong> {{ post.description }}</p>
+  <div class="post-content-wrapper">
+    <div class="post-content">
+      <h2>{{ post.title }}</h2>
+      <p><strong>Category:</strong> {{ post.category }}</p>
+      <p><strong>Posted by:</strong> {{ post.author }}</p>
+      <p *ngIf="post.createdAt"><strong>Posted on:</strong> {{ post.createdAt.toDate() | date:'medium' }}</p>
+      <p *ngIf="post.editedAt"><strong>Edited on:</strong> {{ post.editedAt.toDate() | date:'medium' }}</p>
+      <p><strong>Description:</strong> {{ post.description }}</p>
+    </div>
+    <div *ngIf="post.images?.length" class="post-images">
+      <div class="image-gallery">
+        <img *ngFor="let image of post.images" [src]="image" alt="Post Image" />
+      </div>
+    </div>
   </div>
   <div class="responses" *ngIf="post.responses && post.responses.length > 0">
     <h3>Responses:</h3>

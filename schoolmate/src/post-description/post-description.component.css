@@ -1,17 +1,44 @@
 .post-description-container {
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.post-header {
-  margin-bottom: 20px;
+.post-content-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 75px;
 }
 
 .post-content {
-  margin-bottom: 20px;
+  flex: 2;
 }
 
+.post-images {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+  .image-gallery img {
+    max-width: 800px; /* Smaller image size */
+    max-height: 400px; /* Smaller image size */
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
 .responses {
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .response-item {
@@ -44,7 +71,7 @@
   }
 
 .response-form {
-  margin-top: 20px;
+  margin-top: 1px;
 }
 
   .response-form .form-group {
@@ -88,3 +115,13 @@
       border: 1px solid #ccc;
       border-radius: 5px;
     }
+.post-description-container {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-left: 100px solid #f5f5f5; /* Updated to match the middle part */
+  border-right: 100px solid #f5f5f5; /* Updated to match the middle part */
+  box-sizing: border-box; /* Ensure padding and borders are included in the element's total width */
+  background-color: #f5f5f5; /* Ensure the middle part has the same color */
+}

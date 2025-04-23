@@ -179,5 +179,3 @@ export class PostDescriptionComponent implements OnInit {
     }
   }
 }
-
-

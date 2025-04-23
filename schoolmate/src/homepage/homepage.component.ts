@@ -1,42 +1,57 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { Auth, User } from '@angular/fire/auth';
+import { Auth } from '@angular/fire/auth';
 import { Firestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, serverTimestamp, arrayUnion, arrayRemove } from '@angular/fire/firestore';
+import { getStorage, ref, uploadBytes, getDownloadURL } from '@angular/fire/storage';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'; // Import FormsModule
-import { RouterModule } from '@angular/router'; // Import RouterModule
-import { v4 as uuidv4 } from 'uuid'; // Import UUID library
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-homepage',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule], // Add RouterModule to imports
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './homepage.component.html',
   styleUrls: ['./homepage.component.css']
 })
 export class HomepageComponent implements OnInit {
   private auth = inject(Auth);
   private firestore = inject(Firestore);
+  private storage = getStorage();
 
   postTitle: string = '';
   postCategory: string = '';
   postDescription: string = '';
-  responseText: { [key: string]: string } = {}; // Store response text for each post
+  selectedFiles: File[] = [];
+  responseText: { [key: string]: string } = {};
   posts: any[] = [];
   editingPostId: string | null = null;
-  selectedResponse: { [key: string]: string | null } = {}; // Add property to track selected response for each post
-  initialVotes: { [key: string]: number } = {}; // Add property to store initial votes for each post
+  selectedResponse: { [key: string]: string | null } = {};
+  initialVotes: { [key: string]: number } = {};
 
   async ngOnInit() {
-    await this.loadPosts(); // Ensure loadPosts is called when the component initializes
+    await this.loadPosts();
   }
 
   get currentUser() {
     return this.auth.currentUser;
   }
 
+  async uploadImage(file: File): Promise<string> {
+    const storageRef = ref(this.storage, `posts/${uuidv4()}-${file.name}`);
+    await uploadBytes(storageRef, file);
+    return await getDownloadURL(storageRef);
+  }
+
   async createPost() {
     const currentUser = this.auth.currentUser;
     if (currentUser) {
+      const imageUrls: string[] = [];
+      for (const file of this.selectedFiles) {
+        const imageUrl = await this.uploadImage(file);
+        imageUrls.push(imageUrl);
+      }
+
       const post = {
         title: this.postTitle,
         category: this.postCategory,
@@ -45,17 +60,24 @@ export class HomepageComponent implements OnInit {
         authorId: currentUser.uid,
         createdAt: serverTimestamp(),
         responses: [],
-        votes: 0, // Initialize votes
-        votedBy: {} // Initialize votedBy
+        votes: 0,
+        votedBy: {},
+        images: imageUrls
       };
+
       const docRef = await addDoc(collection(this.firestore, 'posts'), post);
       this.posts.push({ id: docRef.id, ...post, createdAt: new Date() });
       this.postTitle = '';
       this.postCategory = '';
       this.postDescription = '';
+      this.selectedFiles = [];
     } else {
       console.warn('No authenticated user found.');
     }
+  }
+
+  onFileSelected(event: any) {
+    this.selectedFiles = Array.from(event.target.files);
   }
 
   async loadPosts() {
@@ -67,17 +89,15 @@ export class HomepageComponent implements OnInit {
         ...data,
         createdAt: data['createdAt'] ? (data['createdAt'].toDate ? data['createdAt'].toDate() : new Date(data['createdAt'])) : null,
         editedAt: data['editedAt'] ? (data['editedAt'].toDate ? data['editedAt'].toDate() : new Date(data['editedAt'])) : null,
-        votes: data['votes'] || 0, // Ensure votes is initialized
-        votedBy: data['votedBy'] || {} // Ensure votedBy is initialized
+        votes: data['votes'] || 0,
+        votedBy: data['votedBy'] || {}
       };
     });
 
-    // Store initial votes for each post
     this.posts.forEach(post => {
       this.initialVotes[post.id] = post.votes;
     });
 
-    // Sort posts by votes in descending order
     this.posts.sort((a, b) => b.votes - a.votes);
   }
 
@@ -100,14 +120,14 @@ export class HomepageComponent implements OnInit {
         title: this.postTitle,
         category: this.postCategory,
         description: this.postDescription,
-        editedAt: serverTimestamp() // Add editedAt field
+        editedAt: serverTimestamp()
       });
       const updatedPost = this.posts.find(post => post.id === this.editingPostId);
       if (updatedPost) {
         updatedPost.title = this.postTitle;
         updatedPost.category = this.postCategory;
         updatedPost.description = this.postDescription;
-        updatedPost.editedAt = new Date(); // Update the local post object
+        updatedPost.editedAt = new Date();
       }
       this.editingPostId = null;
       this.postTitle = '';
@@ -120,11 +140,11 @@ export class HomepageComponent implements OnInit {
     const currentUser = this.auth.currentUser;
     if (currentUser) {
       const response = {
-        id: uuidv4(), // Generate a unique ID for the response
+        id: uuidv4(),
         text: this.responseText[postId],
         author: currentUser.displayName,
-        authorId: currentUser.uid, // Add authorId field
-        createdAt: new Date() // Set createdAt separately
+        authorId: currentUser.uid,
+        createdAt: new Date()
       };
       const postRef = doc(this.firestore, 'posts', postId);
       await updateDoc(postRef, {
@@ -137,7 +157,7 @@ export class HomepageComponent implements OnInit {
         }
         post.responses.push(response);
       }
-      this.responseText[postId] = ''; // Clear the response text for the specific post
+      this.responseText[postId] = '';
     } else {
       console.warn('No authenticated user found.');
     }
@@ -189,21 +209,17 @@ export class HomepageComponent implements OnInit {
 
       if (voteType === 'upvote') {
         if (userVote === 'upvote') {
-          // User is removing their upvote, reset to initial votes
           newVotes = this.initialVotes[post.id];
           delete post.votedBy[currentUser.uid];
         } else {
-          // User is adding an upvote or changing from downvote to upvote
           newVotes += userVote === 'downvote' ? 2 : 1;
           post.votedBy[currentUser.uid] = 'upvote';
         }
       } else if (voteType === 'downvote') {
         if (userVote === 'downvote') {
-          // User is removing their downvote, reset to initial votes
           newVotes = this.initialVotes[post.id];
           delete post.votedBy[currentUser.uid];
         } else {
-          // User is adding a downvote or changing from upvote to downvote
           newVotes += userVote === 'upvote' ? -2 : -1;
           post.votedBy[currentUser.uid] = 'downvote';
         }
@@ -212,7 +228,6 @@ export class HomepageComponent implements OnInit {
       await updateDoc(postRef, { votes: newVotes, votedBy: post.votedBy });
       post.votes = newVotes;
 
-      // Re-sort posts after voting
       this.posts.sort((a, b) => b.votes - a.votes);
     }
   }
