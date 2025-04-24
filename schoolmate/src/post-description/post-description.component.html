@@ -25,7 +25,7 @@
         <span>{{ response.votes || 0 }}</span>
         <i class="fas fa-arrow-down" (click)="voteResponse(post.id, response.id, 'downvote')"></i>
       </div>
-      <button *ngIf="response.authorId === currentUser?.uid && selectedResponse === response.id" class="btn btn-danger button-same-width" (click)="deleteResponse(response)">Delete</button>
+      <i *ngIf="response.authorId === currentUser?.uid && selectedResponse === response.id" class="material-icons" (click)="deleteResponse(response)">delete</i>
     </div>
   </div>
   <form (ngSubmit)="addResponse()" class="response-form">

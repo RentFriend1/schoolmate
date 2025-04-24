@@ -76,3 +76,22 @@
   width: 70px; /* Ensures both buttons have the same length */
   text-align: center; /* Centers the text inside the buttons */
 }
+
+.material-icons {
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 20%;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.edit-btn:hover {
+  background-color: lightgrey;
+  color: blue;
+}
+
+.delete-btn:hover {
+  background-color: lightgrey;
+  color: red;
+}
+
+

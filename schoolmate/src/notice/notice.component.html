@@ -27,8 +27,8 @@
       <p><strong>Author:</strong> {{ post.author }}</p>
       <p><strong>Posted on:</strong> {{ post.createdAt.toDate() | date:'medium' }}</p>
       <div *ngIf="userRole === 'admin'" class="post-actions">
-        <button class="btn btn-secondary" (click)="editPost(post)">Edit</button>
-        <button class="btn btn-danger" (click)="deletePost(post.id)">Delete</button>
+        <i class="material-icons edit-btn" (click)="editPost(post)">edit</i>
+        <i class="material-icons delete-btn" (click)="deletePost(post.id)">delete</i>
       </div>
     </div>
   </div>

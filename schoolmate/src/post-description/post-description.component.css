@@ -29,6 +29,18 @@
   gap: 10px;
 }
 
+.material-icons {
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 20%;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+  .material-icons:hover {
+    background-color: lightgrey;
+    color: red;
+  }
+
   .image-gallery img {
     max-width: 800px; /* Smaller image size */
     max-height: 400px; /* Smaller image size */

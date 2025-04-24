@@ -1,96 +1,92 @@
-<div class="profile-container" *ngIf="userData">
-  <div class="profile-header">
-    <h2 class="profile-heading">Welcome, {{ userData.displayName }}</h2>
-    <p class="profile-email">Email: {{ userData.email }}</p>
-  </div>
-  <div class="profile-picture-container" *ngIf="userData.photoURL">
-    <img class="profile-picture" [src]="userData.photoURL" alt="Profile Picture">
-  </div>
-</div>
 
-<div class="profile-details" *ngIf="userDetails">
-  <h3 class="details-heading">Additional Details</h3>
-  <div class="details-grid">
-    <div class="detail-item" *ngIf="userDetails['userTypeRole']">
-      <span class="detail-key">User Type and Role:</span>
-      <span class="detail-value">{{ userDetails['userTypeRole'] }}</span>
+  <div class="profile-container" *ngIf="userData">
+    <div class="profile-header">
+      <h2 class="profile-heading">Welcome, {{ userData.displayName }}</h2>
+      <p class="profile-email">Email: {{ userData.email }}</p>
     </div>
-    <div class="detail-item" *ngIf="userDetails['schoolYear'] && userDetails['userTypeRole'] !== 'teacher' && userDetails['userTypeRole'] !== 'admin'">
-      <span class="detail-key">School Year:</span>
-      <span class="detail-value">{{ userDetails['schoolYear'] }}</span>
-    </div>
-    <div class="detail-item" *ngIf="userDetails['subjectsTaught'] && userDetails['userTypeRole'] === 'teacher'">
-      <span class="detail-key">Subjects Taught:</span>
-      <span class="detail-value">{{ userDetails['subjectsTaught'] }}</span>
-    </div>
-    <div class="detail-item" *ngIf="userDetails['cabinetName'] && userDetails['userTypeRole'] === 'teacher'">
-      <span class="detail-key">Cabinet Name:</span>
-      <span class="detail-value">{{ userDetails['cabinetName'] }}</span>
-    </div>
-    <div class="detail-item" *ngIf="userDetails['school']">
-      <span class="detail-key">School:</span>
-      <span class="detail-value">{{ userDetails['school'] }}</span>
-    </div>
-    <div class="detail-item" *ngIf="userDetails['fieldOfStudy'] && userDetails['userTypeRole'] !== 'admin'">
-      <span class="detail-key">Field of Study:</span>
-      <span class="detail-value">{{ userDetails['fieldOfStudy'] }}</span>
-    </div>
-    <div class="detail-item" *ngIf="userDetails['field'] && userDetails['userTypeRole'] === 'admin'">
-      <span class="detail-key">Field:</span>
-      <span class="detail-value">{{ userDetails['field'] }}</span>
+    <div class="profile-picture-container" *ngIf="userData.photoURL">
+      <img class="profile-picture" [src]="userData.photoURL" alt="Profile Picture">
     </div>
   </div>
-</div>
 
-<button class="btn btn-secondary" (click)="toggleEdit()">Edit Your Information</button>
-
-<div class="profile-edit" *ngIf="showEditForm" [@slideToggle]>
-  <h3 class="edit-heading">Edit Your Information</h3>
-  <form (ngSubmit)="saveUserDetails($event)">
-    <div class="form-group">
-      <label for="userTypeRole">User Type and Role</label>
-      <select id="userTypeRole" [(ngModel)]="formData['userTypeRole']" name="userTypeRole">
-        <option value="student">Student</option>
-        <option value="teacher">Teacher</option>
-        <option value="ex-student">Ex-Student</option>
-
-      </select>
+  <div class="profile-details" *ngIf="userDetails">
+    <h3 class="details-heading">Additional Details</h3>
+    <div class="details-grid">
+      <div class="detail-item" *ngIf="userDetails['userTypeRole']">
+        <span class="detail-key">User Type and Role:</span>
+        <span class="detail-value">{{ userDetails['userTypeRole'] }}</span>
+      </div>
+      <div class="detail-item" *ngIf="userDetails['schoolYear'] && userDetails['userTypeRole'] !== 'teacher' && userDetails['userTypeRole'] !== 'admin'">
+        <span class="detail-key">School Year:</span>
+        <span class="detail-value">{{ userDetails['schoolYear'] }}</span>
+      </div>
+      <div class="detail-item" *ngIf="userDetails['subjectsTaught'] && userDetails['userTypeRole'] === 'teacher'">
+        <span class="detail-key">Subjects Taught:</span>
+        <span class="detail-value">{{ userDetails['subjectsTaught'] }}</span>
+      </div>
+      <div class="detail-item" *ngIf="userDetails['cabinetName'] && userDetails['userTypeRole'] === 'teacher'">
+        <span class="detail-key">Cabinet Name:</span>
+        <span class="detail-value">{{ userDetails['cabinetName'] }}</span>
+      </div>
+      <div class="detail-item" *ngIf="userDetails['school']">
+        <span class="detail-key">School:</span>
+        <span class="detail-value">{{ userDetails['school'] }}</span>
+      </div>
+      <div class="detail-item" *ngIf="userDetails['fieldOfStudy'] && userDetails['userTypeRole'] !== 'admin'">
+        <span class="detail-key">Field of Study:</span>
+        <span class="detail-value">{{ userDetails['fieldOfStudy'] }}</span>
+      </div>
+      <div class="detail-item" *ngIf="userDetails['field'] && userDetails['userTypeRole'] === 'admin'">
+        <span class="detail-key">Field:</span>
+        <span class="detail-value">{{ userDetails['field'] }}</span>
+      </div>
     </div>
-    <div class="form-group" *ngIf="formData['userTypeRole'] !== 'teacher' && formData['userTypeRole'] !== 'admin'">
-      <label for="schoolYear">School Year</label>
-      <input type="text" id="schoolYear" [(ngModel)]="formData['schoolYear']" name="schoolYear">
-    </div>
-    <div class="form-group" *ngIf="formData['userTypeRole'] === 'teacher'">
-      <label for="subjectsTaught">Subjects Taught</label>
-      <input type="text" id="subjectsTaught" [(ngModel)]="formData['subjectsTaught']" name="subjectsTaught">
-    </div>
-    <div class="form-group" *ngIf="formData['userTypeRole'] === 'teacher'">
-      <label for="cabinetName">Cabinet Name</label>
-      <input type="text" id="cabinetName" [(ngModel)]="formData['cabinetName']" name="cabinetName">
-    </div>
-    <div class="form-group" *ngIf="formData['userTypeRole'] === 'admin'">
-      <label for="field">Field</label>
-      <input type="text" id="field" [(ngModel)]="formData['field']" name="field">
-    </div>
-    <div class="form-group">
-      <label for="school">School</label>
-      <select id="school" [(ngModel)]="formData['school']" name="school">
-        <option value="SPSIT">SPSIT</option>
-        <option value="GKNM">GKNM</option>
-        <option value="GCA">GCA</option>
-        <option value="GYMB">GYMB</option>
-      </select>
-    </div>
-    <div class="form-group" *ngIf="formData['userTypeRole'] !== 'admin'">
-      <label for="fieldOfStudy">Field of Study</label>
-      <input type="text" id="fieldOfStudy" [(ngModel)]="formData['fieldOfStudy']" name="fieldOfStudy">
-    </div>
-    <button type="submit" class="btn btn-primary">Save</button>
-  </form>
-</div>
+  </div>
 
+  <button class="btn btn-secondary" (click)="toggleEdit()">Edit Your Information</button>
 
+  <div class="profile-edit" *ngIf="showEditForm" [@slideToggle]>
+    <h3 class="edit-heading">Edit Your Information</h3>
+    <form (ngSubmit)="saveUserDetails($event)">
+      <div class="form-group">
+        <label for="userTypeRole">User Type and Role</label>
+        <select id="userTypeRole" [(ngModel)]="formData['userTypeRole']" name="userTypeRole">
+          <option value="student">Student</option>
+          <option value="teacher">Teacher</option>
+          <option value="ex-student">Ex-Student</option>
 
-
-
+        </select>
+      </div>
+      <div class="form-group" *ngIf="formData['userTypeRole'] !== 'teacher' && formData['userTypeRole'] !== 'admin'">
+        <label for="schoolYear">School Year</label>
+        <input type="text" id="schoolYear" [(ngModel)]="formData['schoolYear']" name="schoolYear">
+      </div>
+      <div class="form-group" *ngIf="formData['userTypeRole'] === 'teacher'">
+        <label for="subjectsTaught">Subjects Taught</label>
+        <input type="text" id="subjectsTaught" [(ngModel)]="formData['subjectsTaught']" name="subjectsTaught">
+      </div>
+      <div class="form-group" *ngIf="formData['userTypeRole'] === 'teacher'">
+        <label for="cabinetName">Cabinet Name</label>
+        <input type="text" id="cabinetName" [(ngModel)]="formData['cabinetName']" name="cabinetName">
+      </div>
+      <div class="form-group" *ngIf="formData['userTypeRole'] === 'admin'">
+        <label for="field">Field</label>
+        <input type="text" id="field" [(ngModel)]="formData['field']" name="field">
+      </div>
+      <div class="form-group">
+        <label for="school">School</label>
+        <select id="school" [(ngModel)]="formData['school']" name="school">
+          <option value="SPSIT">SPSIT</option>
+          <option value="GKNM">GKNM</option>
+          <option value="GCA">GCA</option>
+          <option value="GYMB">GYMB</option>
+        </select>
+      </div>
+      <div class="form-group" *ngIf="formData['userTypeRole'] !== 'admin'">
+        <label for="fieldOfStudy">Field of Study</label>
+        <input type="text" id="fieldOfStudy" [(ngModel)]="formData['fieldOfStudy']" name="fieldOfStudy">
+      </div>
+      <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+  </div>
 

@@ -38,7 +38,7 @@
       <ul class="uploaded-files-list">
         <li *ngFor="let fileUpload of fileUploads" class="uploaded-file-item">
           <a [href]="fileUpload.url" target="_blank" class="uploaded-file-link">{{ fileUpload.name }}</a>
-          <button (click)="deleteFileUpload(fileUpload)" class="delete-btn">Delete</button>
+          <i (click)="deleteFileUpload(fileUpload)" style="color:red" class="material-icons">delete</i>
         </li>
       </ul>
     </div>

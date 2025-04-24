@@ -37,12 +37,29 @@ html, body {
   margin-bottom: 20px;
 }
 
+.material-icons {
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 20%; 
+  transition: background-color 0.3s, color 0.3s;
+}
+
+  .material-icons:hover {
+    background-color: lightgrey;
+    color: darkorchid;
+  }
+
+
+
+
+
+
 /* Updated CSS for the "Choose File" button */
 .file-input-label {
   flex: 1;
   padding: 10px 15px; /* Adjusted padding - slightly less horizontal padding */
   font-size: 1em;
-  border: 2px dotted #888; 
+  border: 2px dotted #888;
   border-radius: 5px;
   cursor: pointer;
   background: #ddd; /* Light grey background */
