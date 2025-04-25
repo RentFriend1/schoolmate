@@ -9,3 +9,8 @@
   position: relative;
   margin-top: auto;
 }
+
+.component-wrapper {
+  flex: 1;
+  min-height: 100vh;
+}
