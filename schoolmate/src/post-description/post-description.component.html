@@ -9,11 +9,14 @@
       <p><strong>Description:</strong> {{ post.description }}</p>
     </div>
     <div *ngIf="post.images?.length" class="post-images">
-      <div class="image-gallery">
-        <img *ngFor="let image of post.images" [src]="image" alt="Post Image" />
+      <div class="image-carousel">
+        <button (click)="prevImage()" [disabled]="currentImageIndex === 0">Previous</button>
+        <img [src]="post.images[currentImageIndex]" alt="Post Image" />
+        <button (click)="nextImage()" [disabled]="currentImageIndex === post.images.length - 1">Next</button>
       </div>
     </div>
   </div>
+  <!-- Responses and other content follow... -->
   <div class="responses" *ngIf="post.responses && post.responses.length > 0">
     <h3>Responses:</h3>
     <div *ngFor="let response of post.responses" class="response-item" (click)="selectResponse(response.id)">
