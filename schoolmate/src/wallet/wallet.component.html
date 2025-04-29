@@ -1,0 +1,45 @@
+<div class="wallet-container">
+  <h2 class="wallet-heading">My Wallet</h2>
+
+  <!-- Add a template reference variable to the form if you want to check validity -->
+  <form (ngSubmit)="addExpense()" class="wallet-form" #expenseForm="ngForm">
+    <div class="form-group">
+      <label for="amount">Amount</label>
+      <!-- Use type="number" and min="0" for better input handling -->
+      <input type="number" [(ngModel)]="amount" name="amount" id="amount" required min="0" />
+    </div>
+
+    <div class="form-group">
+      <label for="category">Category</label>
+      <input type="text" [(ngModel)]="category" name="category" id="category" required />
+    </div>
+
+    <div class="form-group">
+      <label for="note">Note (optional)</label>
+      <input type="text" [(ngModel)]="note" name="note" id="note" />
+    </div>
+
+    <!-- Disable button if form is invalid (optional but good practice) -->
+    <!-- Use the template reference variable to check form validity -->
+    <button type="submit" class="btn btn-primary" [disabled]="!expenseForm.form.valid">Add Expense</button>
+  </form>
+
+  <div class="expense-list">
+    <!-- Display message if no expenses -->
+    <!-- Check the component's expenses array directly -->
+    <div *ngIf="expenses.length === 0" class="no-expenses-message">No expenses recorded.</div>
+
+    <!-- Loop through expenses if there are any -->
+    <!-- Iterate directly over the component's expenses array -->
+    <!-- *ngFor will not render anything if the array is empty -->
+    <div *ngFor="let expense of expenses" class="expense-item">
+      <div class="expense-date">
+        <!-- Use the getDate helper method to ensure you always get a Date object -->
+        {{ getDate(expense.date) | date:'short' }}
+      </div>
+      <div class="expense-category">{{ expense.category }}</div>
+      <div class="expense-amount">${{ expense.amount | number:'1.2-2' }}</div>
+      <div class="expense-note" *ngIf="expense.note">{{ expense.note }}</div>
+    </div>
+  </div>
+</div>
