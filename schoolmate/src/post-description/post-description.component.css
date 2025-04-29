@@ -3,13 +3,17 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  border-left: 100px solid #f5f5f5;
+  border-right: 100px solid #f5f5f5;
+  box-sizing: border-box;
+  background-color: #f5f5f5;
 }
 
 .post-content-wrapper {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 75px;
+  gap: 50px;
 }
 
 .post-content {
@@ -23,31 +27,55 @@
   align-items: center;
 }
 
-.image-gallery {
+.image-carousel {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+  text-align: center;
 }
 
-.material-icons {
+.image-wrapper {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  overflow: hidden; /* ensures the image respects the border radius */
+}
+
+  .image-wrapper img {
+    display: block;
+    max-width: 450px;
+    max-height: 450px;
+  }
+
+.carousel-button {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  padding: 4px;
-  border-radius: 20%;
-  transition: background-color 0.3s, color 0.3s;
+  transition: background-color 0.3s ease;
+  margin: 0 10px; /* space between button and image */
 }
 
-  .material-icons:hover {
-    background-color: lightgrey;
-    color: red;
+  .carousel-button:disabled {
+    background-color: rgba(0, 0, 0, 0.2);
+    cursor: not-allowed;
   }
 
-  .image-gallery img {
-    max-width: 800px; /* Smaller image size */
-    max-height: 400px; /* Smaller image size */
-    height: auto;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  .carousel-button:hover:not(:disabled) {
+    background-color: rgba(0, 0, 0, 0.8);
   }
+
+  .carousel-button .material-icons {
+    font-size: 24px;
+  }
+
 
 .responses {
   margin-top: 10px;
@@ -73,8 +101,9 @@
   margin-left: 10px;
 }
 
-  .response-votes i {
+  .response-votes .material-icons.response-arrow {
     cursor: pointer;
+    font-size: 20px;
     margin: 0 5px;
   }
 
@@ -99,7 +128,7 @@
   }
 
 .post-buttons {
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
   .post-buttons .btn {
@@ -126,43 +155,4 @@
       padding: 10px;
       border: 1px solid #ccc;
       border-radius: 5px;
-    }
-.post-description-container {
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  border-left: 100px solid #f5f5f5; /* Updated to match the middle part */
-  border-right: 100px solid #f5f5f5; /* Updated to match the middle part */
-  box-sizing: border-box; /* Ensure padding and borders are included in the element's total width */
-  background-color: #f5f5f5; /* Ensure the middle part has the same color */
-}
-
-.image-carousel {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin: 20px 0;
-}
-
-  .image-carousel img {
-    max-width: 100%;
-    max-height: 400px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-
-  .image-carousel button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-
-    .image-carousel button:disabled {
-      background-color: #ccc;
-      cursor: not-allowed;
     }

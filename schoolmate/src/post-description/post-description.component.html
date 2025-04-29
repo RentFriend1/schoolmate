@@ -10,9 +10,15 @@
     </div>
     <div *ngIf="post.images?.length" class="post-images">
       <div class="image-carousel">
-        <button (click)="prevImage()" [disabled]="currentImageIndex === 0">Previous</button>
-        <img [src]="post.images[currentImageIndex]" alt="Post Image" />
-        <button (click)="nextImage()" [disabled]="currentImageIndex === post.images.length - 1">Next</button>
+        <button (click)="prevImage()" class="carousel-button">
+          <span class="material-icons">chevron_left</span>
+        </button>
+        <div class="image-wrapper">
+          <img [src]="post.images[currentImageIndex]" alt="Post Image" />
+        </div>
+        <button (click)="nextImage()" class="carousel-button">
+          <span class="material-icons">chevron_right</span>
+        </button>
       </div>
     </div>
   </div>
@@ -24,11 +30,13 @@
         <p><strong>{{ response.author }}:</strong> {{ response.text }}</p>
       </div>
       <div class="response-votes">
-        <i class="fas fa-arrow-up" (click)="voteResponse(post.id, response.id, 'upvote')"></i>
+        <span class="material-icons response-arrow" (click)="voteResponse(post.id, response.id, 'upvote')">arrow_upward</span>
         <span>{{ response.votes || 0 }}</span>
-        <i class="fas fa-arrow-down" (click)="voteResponse(post.id, response.id, 'downvote')"></i>
+        <span class="material-icons response-arrow" (click)="voteResponse(post.id, response.id, 'downvote')">arrow_downward</span>
       </div>
-      <i *ngIf="response.authorId === currentUser?.uid && selectedResponse === response.id" class="material-icons" (click)="deleteResponse(response)">delete</i>
+      <span *ngIf="response.authorId === currentUser?.uid && selectedResponse === response.id"
+            class="material-icons"
+            (click)="deleteResponse(response)">delete</span>
     </div>
   </div>
   <form (ngSubmit)="addResponse()" class="response-form">

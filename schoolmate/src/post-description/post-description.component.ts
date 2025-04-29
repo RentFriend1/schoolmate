@@ -185,16 +185,19 @@ export class PostDescriptionComponent implements OnInit {
     }
   }
 
-  // New methods for image carousel navigation
+  // Updated methods for image carousel navigation with debugging
+
   prevImage() {
-    if (this.currentImageIndex > 0) {
-      this.currentImageIndex--;
+    if (this.post && this.post.images && this.post.images.length > 0) {
+      this.currentImageIndex = (this.currentImageIndex - 1 + this.post.images.length) % this.post.images.length;
+      console.log('prevImage: new index=', this.currentImageIndex);
     }
   }
 
   nextImage() {
-    if (this.post && this.currentImageIndex < this.post.images.length - 1) {
-      this.currentImageIndex++;
+    if (this.post && this.post.images && this.post.images.length > 0) {
+      this.currentImageIndex = (this.currentImageIndex + 1) % this.post.images.length;
+      console.log('nextImage: new index=', this.currentImageIndex);
     }
   }
 }
