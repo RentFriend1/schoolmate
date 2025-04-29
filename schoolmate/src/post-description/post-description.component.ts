@@ -23,6 +23,9 @@ export class PostDescriptionComponent implements OnInit {
   selectedResponse: string | null = null;
   initialResponseVotes: { [key: string]: number } = {};
 
+  // Carousel property to track the currently visible image
+  currentImageIndex: number = 0;
+
   constructor(private route: ActivatedRoute) { }
 
   async ngOnInit() {
@@ -31,6 +34,9 @@ export class PostDescriptionComponent implements OnInit {
       const postDoc = await getDoc(doc(this.firestore, 'posts', postId));
       if (postDoc.exists()) {
         this.post = { id: postDoc.id, ...postDoc.data() };
+
+        // Initialize carousel index
+        this.currentImageIndex = 0;
 
         // Store initial votes for each response
         this.post['responses'].forEach((response: any) => {
@@ -176,6 +182,19 @@ export class PostDescriptionComponent implements OnInit {
         // Sort responses by votes in descending order
         this.post['responses'].sort((a: any, b: any) => b.votes - a.votes);
       }
+    }
+  }
+
+  // New methods for image carousel navigation
+  prevImage() {
+    if (this.currentImageIndex > 0) {
+      this.currentImageIndex--;
+    }
+  }
+
+  nextImage() {
+    if (this.post && this.currentImageIndex < this.post.images.length - 1) {
+      this.currentImageIndex++;
     }
   }
 }

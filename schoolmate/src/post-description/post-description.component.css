@@ -137,3 +137,32 @@
   box-sizing: border-box; /* Ensure padding and borders are included in the element's total width */
   background-color: #f5f5f5; /* Ensure the middle part has the same color */
 }
+
+.image-carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+  .image-carousel img {
+    max-width: 100%;
+    max-height: 400px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  .image-carousel button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+    .image-carousel button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
