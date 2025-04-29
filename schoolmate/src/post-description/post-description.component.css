@@ -132,8 +132,12 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  border-left: 100px solid #f5f5f5; /* Updated to match the middle part */
-  border-right: 100px solid #f5f5f5; /* Updated to match the middle part */
-  box-sizing: border-box; /* Ensure padding and borders are included in the element's total width */
-  background-color: #f5f5f5; /* Ensure the middle part has the same color */
+  border-left: 100px solid #f5f5f5;
+  border-right: 100px solid #f5f5f5;
+  box-sizing: border-box; 
+  background-color: #f5f5f5; }
+
+.post-content {
+  font-size: 1.2rem;
+  line-height: 1.6;
 }

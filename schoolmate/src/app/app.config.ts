@@ -12,6 +12,7 @@ import { provideStorage, getStorage } from '@angular/fire/storage';
 
 // Standalone components
 import { SigninComponent } from '../signin/signin.component';
+import { WalletComponent } from '../wallet/wallet.component';
 import { MaterialsComponent } from '../materials/materials.component';
 import { HomepageComponent } from '../homepage/homepage.component';
 import { NoticeComponent } from '../notice/notice.component';
@@ -38,7 +39,8 @@ const routes: Route[] = [
   { path: 'profile', component: ProfileComponent, pathMatch: 'full', canActivate: [authGuard] },
   { path: 'materials', component: MaterialsComponent, pathMatch: 'full', canActivate: [authGuard] },
   { path: 'notice', component: NoticeComponent, pathMatch: 'full' },
-  { path: 'post/:id', component: PostDescriptionComponent }, // Add route for PostDescriptionComponent
+  { path: 'post/:id', component: PostDescriptionComponent },
+  { path: 'wallet', component: WalletComponent, pathMatch: 'full', canActivate: [authGuard] },
 ];
 
 export const appConfig: ApplicationConfig = {
@@ -48,11 +50,7 @@ export const appConfig: ApplicationConfig = {
     provideFirebaseApp(() => initializeApp(environment)),
     provideAuth(() => {
       const auth = getAuth();
-
-      // Choose ONE persistence type:
-      setPersistence(auth, browserLocalPersistence)  //  <-- CORRECT USAGE: Local Persistence
-        // OR
-        // setPersistence(auth, browserSessionPersistence) //<-- CORRECT USAGE: Session Persistence
+      setPersistence(auth, browserLocalPersistence)  
         .then(() => {
           console.log("Persistence is set.");
         })
