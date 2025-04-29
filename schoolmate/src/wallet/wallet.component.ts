@@ -5,17 +5,11 @@ import { FormsModule } from '@angular/forms';
 import {
   Firestore,
   collection,
-  query,
-  where,
-  orderBy,
   getDocs,
-  addDoc
+  addDoc,
 } from '@angular/fire/firestore';
 
-import {
-  Auth,
-} from '@angular/fire/auth';
-
+import { Auth } from '@angular/fire/auth';
 import { Timestamp } from 'firebase/firestore';
 
 interface Expense {
@@ -65,25 +59,22 @@ export class WalletComponent implements OnInit {
     if (currentUser) {
       try {
         const expensesCollection = collection(this.firestore, 'expenses');
-        const userExpensesQuery = query(
-          expensesCollection,
-          where('studentId', '==', currentUser.uid),
-          orderBy('date', 'desc')
-        );
+        const querySnapshot = await getDocs(expensesCollection);
 
-        const querySnapshot = await getDocs(userExpensesQuery);
-
-        this.expenses = querySnapshot.docs.map(doc => {
-          const data = doc.data() as any;
-          return {
-            id: doc.id,
-            amount: data.amount,
-            category: data.category,
-            note: data.note,
-            date: data.date instanceof Timestamp ? data.date : new Date(data.date.seconds * 1000),
-            studentId: data.studentId
-          } as Expense;
-        });
+        this.expenses = querySnapshot.docs
+          .map(doc => {
+            const data = doc.data() as any;
+            return {
+              id: doc.id,
+              amount: data.amount,
+              category: data.category,
+              note: data.note,
+              date: data.date instanceof Timestamp ? data.date : new Date(data.date.seconds * 1000),
+              studentId: data.studentId
+            } as Expense;
+          })
+          .filter(expense => expense.studentId === currentUser.uid) // Filter by studentId
+          .sort((a, b) => this.getDate(b.date).getTime() - this.getDate(a.date).getTime()); // Sort by date descending
       } catch (error) {
         console.error("Error loading expenses: ", error);
       }
