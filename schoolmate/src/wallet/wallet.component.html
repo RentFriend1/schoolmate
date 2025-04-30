@@ -1,45 +1,97 @@
 <div class="wallet-container">
-  <h2 class="wallet-heading">My Wallet</h2>
+  <h2>Wallet</h2>
+  <div class="balance">
+    <strong>Current Balance:</strong> {{ balance | currency }}
+  </div>
 
-  <!-- Add a template reference variable to the form if you want to check validity -->
-  <form (ngSubmit)="addExpense()" class="wallet-form" #expenseForm="ngForm">
-    <div class="form-group">
-      <label for="amount">Amount</label>
-      <!-- Use type="number" and min="0" for better input handling -->
-      <input type="number" [(ngModel)]="amount" name="amount" id="amount" required min="0" />
-    </div>
-
-    <div class="form-group">
-      <label for="category">Category</label>
-      <input type="text" [(ngModel)]="category" name="category" id="category" required />
-    </div>
-
-    <div class="form-group">
-      <label for="note">Note (optional)</label>
-      <input type="text" [(ngModel)]="note" name="note" id="note" />
-    </div>
-
-    <!-- Disable button if form is invalid (optional but good practice) -->
-    <!-- Use the template reference variable to check form validity -->
-    <button type="submit" class="btn btn-primary" [disabled]="!expenseForm.form.valid">Add Expense</button>
-  </form>
-
-  <div class="expense-list">
-    <!-- Display message if no expenses -->
-    <!-- Check the component's expenses array directly -->
-    <div *ngIf="expenses.length === 0" class="no-expenses-message">No expenses recorded.</div>
-
-    <!-- Loop through expenses if there are any -->
-    <!-- Iterate directly over the component's expenses array -->
-    <!-- *ngFor will not render anything if the array is empty -->
-    <div *ngFor="let expense of expenses" class="expense-item">
-      <div class="expense-date">
-        <!-- Use the getDate helper method to ensure you always get a Date object -->
-        {{ getDate(expense.date) | date:'short' }}
+  <div class="transaction-form">
+    <h3>Add Transaction</h3>
+    <form (ngSubmit)="addTransaction()" #transactionForm="ngForm">
+      <div class="form-group">
+        <label for="type">Transaction Type:</label>
+        <select name="type" id="type" [(ngModel)]="selectedType" required>
+          <option value="income">Income</option>
+          <option value="expense">Expense</option>
+        </select>
       </div>
-      <div class="expense-category">{{ expense.category }}</div>
-      <div class="expense-amount">${{ expense.amount | number:'1.2-2' }}</div>
-      <div class="expense-note" *ngIf="expense.note">{{ expense.note }}</div>
+
+      <div class="form-group">
+        <label for="amount">Amount:</label>
+        <input type="number"
+               name="amount"
+               id="amount"
+               [(ngModel)]="amount"
+               required
+               min="0.01"
+               step="0.01" />
+      </div>
+
+      <div class="form-group">
+        <label for="date">Date:</label>
+        <input type="date" name="date" id="date" [(ngModel)]="date" required />
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description:</label>
+        <input type="text"
+               name="description"
+               id="description"
+               [(ngModel)]="description"
+               required />
+      </div>
+
+      <div class="form-group" *ngIf="selectedType === 'expense'">
+        <label for="category">Category:</label>
+        <select name="category" id="category" [(ngModel)]="category" required>
+          <option value="" disabled selected>Select category</option>
+          <option *ngFor="let cat of expenseCategories" [value]="cat">{{ cat }}</option>
+          <option *ngFor="let cat of customCategories" [value]="cat">{{ cat }}</option>
+        </select>
+      </div>
+
+      <button type="submit">Add Transaction</button>
+    </form>
+  </div>
+
+  <div class="transaction-history">
+    <h3>Transaction History</h3>
+    <div class="filters">
+      <label for="filter-type">Type:</label>
+      <select id="filter-type" [(ngModel)]="filterType">
+        <option value="">All</option>
+        <option value="income">Income</option>
+        <option value="expense">Expense</option>
+      </select>
+      <label for="filter-date-from">From:</label>
+      <input type="date" id="filter-date-from" [(ngModel)]="filterDateFrom" />
+      <label for="filter-date-to">To:</label>
+      <input type="date" id="filter-date-to" [(ngModel)]="filterDateTo" />
+      <button type="button" (click)="applyFilters()">Apply Filters</button>
     </div>
+
+    <table class="transactions-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Type</th>
+          <th>Amount</th>
+          <th>Category</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let tx of displayedTransactions">
+          <td>{{ getValidDate(tx.date) | date:'shortDate':'UTC' }}</td>
+          <td>{{ tx.type }}</td>
+          <td>{{ tx.amount | currency }}</td>
+          <td>
+            <span *ngIf="tx.type === 'expense'; else noCat">{{ tx.category }}</span>
+            <ng-template #noCat>-</ng-template>
+          </td>
+          <td>{{ tx.description }}</td>
+        </tr>
+      </tbody>
+    </table>
+
   </div>
 </div>

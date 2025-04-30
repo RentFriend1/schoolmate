@@ -1,97 +1,85 @@
 .wallet-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  min-height: 100vh;
-  background: white;
-  padding: 20px;
-  box-sizing: border-box;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+  font-family: Arial, sans-serif;
 }
 
-.wallet-heading {
-  font-size: 3em;
-  color: #007bff;
-  margin-bottom: 20px;
-  text-align: center;
+.balance {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
 }
 
-.wallet-form {
-  width: 100%;
-  max-width: 600px;
-  margin-bottom: 40px;
+.transaction-form,
+.transaction-history {
+  background-color: #f9f9f9;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
 }
+
+  .transaction-form h3,
+  .transaction-history h3 {
+    margin-top: 0;
+  }
 
 .form-group {
-  margin-bottom: 10px;
-  margin-top: 10px;
+  margin-bottom: 0.75rem;
 }
 
   .form-group label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 0.25rem;
     font-weight: bold;
   }
 
   .form-group input,
-  .form-group select,
-  .form-group textarea {
+  .form-group select {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    padding: 0.5rem;
     box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
   }
 
-.btn {
-  padding: 10px 20px;
-  font-size: 1em;
+button {
+  background-color: #0078d7;
+  color: #fff;
   border: none;
-  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
   cursor: pointer;
 }
 
-.btn-primary {
-  background: #007bff;
-  color: white;
-}
-
-  .btn-primary:hover {
-    opacity: 0.9;
+  button:hover {
+    background-color: #005a9e;
   }
 
-.expense-list {
+.filters {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+  .filters label {
+    font-weight: normal;
+  }
+
+.transactions-table {
   width: 100%;
-  max-width: 600px;
-  margin-top: 20px;
+  border-collapse: collapse;
 }
 
-.expense-item {
-  background: #f9f9f9;
-  border-radius: 10px;
-  padding: 15px;
-  margin-bottom: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+  .transactions-table th,
+  .transactions-table td {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
 
-.expense-date {
-  font-size: 0.9em;
-  color: #999;
-}
-
-.expense-category {
-  font-size: 1.2em;
-  color: #007bff;
-  margin: 5px 0;
-}
-
-.expense-amount {
-  font-size: 1.2em;
-  color: #333;
-}
-
-.expense-note {
-  font-size: 1em;
-  color: #666;
-  margin-top: 5px;
-}
+  .transactions-table th {
+    background-color: #f1f1f1;
+  }
